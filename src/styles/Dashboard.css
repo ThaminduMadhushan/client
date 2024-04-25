@@ -1,0 +1,27 @@
+.priceCard {
+    padding: 10px;
+}
+
+.priceTitle {
+    font-weight: 600;
+}
+
+.priceSubTitle {
+    font-size: 14px;
+}
+
+.priceImage {
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.gradient {
+   background: #2EB62C;
+   background: linear-gradient(90deg, #2EB62C 0%, #83D475 35%, #C5E8B7 100%);
+}
+
+.backgroundColor {
+    background: rgba(204, 204, 204, 0.685);
+    min-height: 100vh;
+
+}
