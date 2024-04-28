@@ -43,7 +43,7 @@ export default function Login() {
     axios.get('http://localhost:3001/api/auth/authenticated')
       .then(res => {
         if (res.data.authenticated) {
-          navigate('/');
+          navigate('/details');
         }
       })
       .catch(err => {
@@ -72,7 +72,7 @@ export default function Login() {
     axios.post('http://localhost:3001/api/auth/login', values)
     .then((response) => {
       if (response.data.Login) {
-        navigate('/');
+        navigate('/details');
       } else {
         alert("Email or Password is incorrect");
       }
