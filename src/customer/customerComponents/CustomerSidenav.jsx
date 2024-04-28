@@ -87,7 +87,7 @@ export default function CustomerSidenav() {
         </DrawerHeader>
         <Divider />
         <List>
-        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customerhome")}>
+        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customer/home")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -107,7 +107,7 @@ export default function CustomerSidenav() {
                 <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customerabout")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customer/about")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -127,7 +127,7 @@ export default function CustomerSidenav() {
                 <ListItemText primary="About" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customersetting")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customer/setting")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
