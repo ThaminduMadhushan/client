@@ -22,7 +22,7 @@ function AppAppBar() {
             underline="none"
             color="inherit"
             sx={{ fontSize: 24 }}
-            href="/landing"
+            href="/"
           >
             {'Eko Plasco'}
           </Link>

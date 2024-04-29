@@ -8,6 +8,7 @@ import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import CardContent from "@mui/material/CardContent";
 import PersonDetails from "./PersonDetails";
+import Person from "./Person";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,7 +66,7 @@ export default function BasicTabs() {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            Item One
+            <Person />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <PersonDetails />
