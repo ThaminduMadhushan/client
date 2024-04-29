@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from 'sweetalert2';
+import { Navigate } from "react-router-dom";
 
 function AddProducts({ closeEvent }) {
   const [name, setName] = useState("");

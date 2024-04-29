@@ -32,16 +32,54 @@ export default function Person() {
       });
   }, [navigate]);
 
-  const payments = [
-    { name: 'Card type:', detail: user.firstname },
-    { name: 'Card holder:', detail: 'Mr. John Smith' },
-    { name: 'Card number:', detail: 'xxxx-xxxx-xxxx-1234' },
-    { name: 'Expiry date:', detail: '04/2024' },
+  const person = [
+    { name: 'Name:', detail: user.firstname },
+    { name: 'Email:', detail: user.email },
+    
   ];
   
   return (
     <Stack spacing={2}>
-      <List disablePadding>
+      <Stack
+        direction="column"
+        divider={<Divider flexItem />}
+        spacing={2}
+        sx={{ my: 2 }}
+      >
+        <div>
+          <Typography variant="subtitle2" gutterBottom>
+            About
+          </Typography>
+          <Typography gutterBottom>{user.firstname} {user.lastname}</Typography>
+          <Typography color="text.secondary" gutterBottom>
+          Thamindu Madhushan approaches life with a blend of determination and creativity, embracing each experience with enthusiasm. With a passion for learning and a drive for innovation, Thamindu seeks to make a positive impact in the world. Through dedication and perseverance, Thamindu aims to leave a lasting legacy of inspiration for future generations.
+          </Typography>
+        </div>
+        <div>
+          <Typography variant="subtitle2" gutterBottom>
+            User Details
+          </Typography>
+          <Grid container>
+            {person.map((person) => (
+              <React.Fragment key={person.name}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  useFlexGap
+                  sx={{ width: '100%', mb: 1 }}
+                >
+                  <Typography variant="body1" color="text.secondary">
+                    {person.name}
+                  </Typography>
+                  <Typography variant="body2">{person.detail}</Typography>
+                </Stack>
+              </React.Fragment>
+            ))}
+          </Grid>
+        </div>
+      </Stack>
+      
+      {/* <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Products" secondary="4 selected" />
           <Typography variant="body2">$134.98</Typography>
@@ -56,46 +94,9 @@ export default function Person() {
             $144.97
           </Typography>
         </ListItem>
-      </List>
+      </List> */}
       <Divider />
-      <Stack
-        direction="column"
-        divider={<Divider flexItem />}
-        spacing={2}
-        sx={{ my: 2 }}
-      >
-        <div>
-          <Typography variant="subtitle2" gutterBottom>
-            Shipment details
-          </Typography>
-          <Typography gutterBottom>John Smith</Typography>
-          <Typography color="text.secondary" gutterBottom>
-            {addresses.join(', ')}
-          </Typography>
-        </div>
-        <div>
-          <Typography variant="subtitle2" gutterBottom>
-            Payment details
-          </Typography>
-          <Grid container>
-            {payments.map((payment) => (
-              <React.Fragment key={payment.name}>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  useFlexGap
-                  sx={{ width: '100%', mb: 1 }}
-                >
-                  <Typography variant="body1" color="text.secondary">
-                    {payment.name}
-                  </Typography>
-                  <Typography variant="body2">{payment.detail}</Typography>
-                </Stack>
-              </React.Fragment>
-            ))}
-          </Grid>
-        </div>
-      </Stack>
+      
     </Stack>
   );
 }
