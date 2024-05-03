@@ -9,6 +9,8 @@ import AdminDashboard from "./AdminDashboard.jsx";
 import AdminHome from "./admin/AdminHome.jsx";
 import AdminAbout from "./admin/AdminAbout.jsx";
 import AdminSetting from "./admin/AdminSetting.jsx";
+import AdminMaterial from "./admin/AdminMaterial.jsx";
+import AdminOrder from "./admin/AdminOrder.jsx";
 
 import EmployeeHome from "./employee/EmployeeHome.jsx";
 import EmployeeAbout from "./employee/EmployeeAbout.jsx";
@@ -21,6 +23,7 @@ import CustomerSetting from "./customer/CustomerSetting.jsx";
 import SupplierHome from "./supplier/SupplierHome.jsx";
 import SupplierAbout from "./supplier/SupplierAbout.jsx";
 import SupplierSetting from "./supplier/SupplierSetting.jsx";
+
 
 function App() {
   return (
@@ -35,6 +38,8 @@ function App() {
           <Route path="/admin/home" element={<AdminHome />}></Route>
           <Route path="/admin/about" element={<AdminAbout />}></Route>
           <Route path="/admin/setting" element={<AdminSetting />}></Route>
+          <Route path="/admin/material" element={<AdminMaterial />}></Route>
+          <Route path="/admin/order" element={<AdminOrder />}></Route>
 
           <Route path="/employee/home" element={<EmployeeHome />}></Route>
           <Route path="/employee/about" element={<EmployeeAbout />}></Route>
