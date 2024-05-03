@@ -18,9 +18,8 @@ import Modal from "@mui/material/Modal";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import AddOrders from "./AddOrder";
-import EditOrders from "./EditOrder";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import AddProducts from "./AddProduct";
+import EditProducts from "./EditProduct";
 
 const style = {
   position: "absolute",
@@ -34,55 +33,40 @@ const style = {
   p: 4,
 };
 
-export default function OrderList() {
+export default function ProductList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [editOrderId, setEditOrderId] = useState(null);
+  const [editProductId, setEditProductId] = useState(null);
 
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const handleOpenEditModal = (orderId) => {
-    setEditOrderId(orderId);
+  const handleOpenEditModal = (productId) => {
+    setEditProductId(productId);
     setOpenEditModal(true);
   };
 
   const handleCloseEditModal = () => setOpenEditModal(false);
 
   useEffect(() => {
-    fetchOrders();
+    fetchProducts();
   }, []);
 
-  const fetchOrders = async () => {
+  const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/orders");
+      const response = await fetch("http://localhost:3001/api/products");
       if (!response.ok) {
-      
-        throw new Error("Failed to fetch orders");
+        throw new Error("Failed to fetch products");
       }
       const data = await response.json();
       setRows(data);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      console.error("Error fetching products:", error);
     }
   };
-
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3001/api/products");
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch products");
-  //     }
-  //     const data = await response.json();
-  //     // setRows(data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
-
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -107,14 +91,14 @@ export default function OrderList() {
 
       if (confirmed.isConfirmed) {
         const response = await fetch(
-          `http://localhost:3001/api/orders/${id}`,
+          `http://localhost:3001/api/products/${id}`,
           {
             method: "DELETE",
           }
         );
 
         if (!response.ok) {
-          throw new Error("Failed to delete order");
+          throw new Error("Failed to delete product");
         }
 
         const newRows = rows.filter((row) => row.id !== id);
@@ -127,47 +111,8 @@ export default function OrderList() {
         );
       }
     } catch (error) {
-      console.error("Error deleting order:", error);
-      Swal.fire("Error!", "Failed to delete the order.", "error");
-    }
-  };
-
-  const Accept = async (id) => {
-    try {
-      const confirmed = await Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Accept it!",
-      });
-
-      if (confirmed.isConfirmed) {
-        const response = await fetch(
-          `http://localhost:3001/api/orders/accept/${id}`,
-          {
-            method: "PUT",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to Accept order");
-        }
-
-        const newRows = rows.filter((row) => row.id !== id);
-        setRows(newRows);
-
-        Swal.fire("Accept!", "The Order has been Accepted.", "success").then(
-          () => {
-            window.location.reload();
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Error accept order:", error);
-      Swal.fire("Error!", "Failed to accept the order.", "error");
+      console.error("Error deleting product:", error);
+      Swal.fire("Error!", "Failed to delete the product.", "error");
     }
   };
 
@@ -189,7 +134,7 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <AddOrders closeEvent={handleCloseAddModal} />
+            <AddProducts closeEvent={handleCloseAddModal} />
           </Box>
         </Modal>
         <Modal
@@ -198,9 +143,9 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <EditOrders
+            <EditProducts
               closeEvent={handleCloseEditModal}
-              orderId={editOrderId}
+              productId={editProductId}
             />
           </Box>
         </Modal>
@@ -212,10 +157,11 @@ export default function OrderList() {
           component="div"
           sx={{ padding: "20px" }}
         >
-          ORDER
+          Products
         </Typography>
         <Divider />
         <Box height={10} />
+        
         <div
           style={{
             display: "flex",
@@ -245,7 +191,7 @@ export default function OrderList() {
             onClick={handleOpenAddModal}
             size="large"
           >
-            Add Order
+            Add Product
           </Button>
         </div>
 
@@ -257,19 +203,13 @@ export default function OrderList() {
                   Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Material Type
+                  Price
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Quantity
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Price
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
                   Date
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Status
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Action
@@ -291,31 +231,24 @@ export default function OrderList() {
                         {row.name}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.material}
+                        {row.price}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
                         {row.quantity}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.price}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
                         {row.date}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.status}
                       </TableCell>
                       <TableCell align={"left"}>
                         <Stack spacing={2}>
-                          
-                          <ThumbUpIcon
+                          <EditIcon
                             style={{
                               fontSize: "20px",
                               color: "#02294F",
                               cursor: "pointer",
                             }}
                             className="cursor-pointer"
-                            onClick={() => Accept(row.id)} // Pass the order ID to the edit modal
+                            onClick={() => handleOpenEditModal(row.id)} // Pass the product ID to the edit modal
                           />
                           <DeleteIcon
                             style={{

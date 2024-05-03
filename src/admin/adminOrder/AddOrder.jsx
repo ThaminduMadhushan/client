@@ -1,82 +1,102 @@
+import React, { useState, useEffect } from "react";
 import { Grid, IconButton, Typography } from "@mui/material";
-import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
-import Swal from 'sweetalert2';
-import { Navigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import Autocomplete from "@mui/material/Autocomplete";
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
-function AddProducts({ closeEvent }) {
+function AddOrder({ closeEvent }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [material, setMaterial] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
+  const [status, setStatus] = useState("");
   const [error, setError] = useState("");
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/api/products");
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
-  const handlePriceChange = (event) => {
-    setPrice(event.target.value);
-  };
+
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
+    calculatePrice(event.target.value, material);
+  };
+
+  const calculatePrice = (quantity, material) => {
+    const selectedMaterial = products.find(
+      (m) => m.name === material
+    );
+    if (selectedMaterial) {
+      const totalPrice = selectedMaterial.price * parseInt(quantity);
+      setPrice(totalPrice);
+    }
   };
 
   const handleSubmit = () => {
-    // Convert quantity to a number
     const quantityValue = parseInt(quantity);
-    
     if (isNaN(quantityValue)) {
       setError("Quantity must be a number.");
       return;
     }
 
-    // Make POST request to backend
-    fetch('http://localhost:3001/api/products', {
-      method: 'POST',
+    fetch("http://localhost:3001/api/orders", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name,
+        material,
+        quantity: quantityValue,
         price,
-        quantity: quantityValue, // Send the parsed integer value for quantity
+        status,
       }),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to add product');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Product created:', data);
-      Swal.fire(
-        'Success!',
-        'Product added successfully.',
-        'success'
-      );
-      // Close the modal after success
-      closeEvent();
-    })
-    .catch((error) => {
-      console.error('Error adding product:', error);
-      Swal.fire(
-        'Error!',
-        'Failed to add the product.',
-        'error'
-      );
-      // Close the modal even if there's an error
-      closeEvent();
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add order.");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Order created:", data);
+        Swal.fire("Success!", "Order added successfully.", "success");
+        closeEvent();
+        window.location.reload(); // Reload the page after successful order addition
+      })
+      .catch((error) => {
+        console.error("Error adding order:", error);
+        Swal.fire("Error!", "Failed to add the order.", "error");
+        closeEvent();
+      });
   };
 
   return (
     <div>
       <Box sx={{ m: 2 }}></Box>
       <Typography variant="h5" align="center">
-        Add Product
+        Add Order
       </Typography>
       <IconButton
         style={{ position: "absolute", top: 0, right: 0 }}
@@ -97,21 +117,19 @@ function AddProducts({ closeEvent }) {
             sx={{ width: "100%" }}
           />
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-basic"
-            label="Price"
-            variant="outlined"
-            size="small"
-            type="number"
-            InputProps={{
-              startAdornment: "Rs.",
+        <Grid item xs={12}>
+          <Autocomplete
+            value={material}
+            onChange={(event, newValue) => {
+              setMaterial(newValue);
+              calculatePrice(quantity, newValue);
             }}
-            value={price}
-            onChange={handlePriceChange}
-            sx={{ width: "100%" }}
-          >
-          </TextField>
+            id="material-autocomplete"
+            options={products.map((material) => material.name)}
+            renderInput={(params) => (
+              <TextField {...params} label="Material Type" />
+            )}
+          />
         </Grid>
         <Grid item xs={6}>
           <TextField
@@ -122,10 +140,25 @@ function AddProducts({ closeEvent }) {
             type="number"
             value={quantity}
             onChange={handleQuantityChange}
+            InputProps={{
+              endAdornment: "Kg",
+            }}
             sx={{ width: "100%" }}
-          >
-          </TextField>
+          />
         </Grid>
+        <Grid item xs={6}>
+          <TextField
+            id="outlined-basic"
+            label="Price"
+            variant="outlined"
+            size="small"
+            type="text"
+            value={price}
+            readOnly
+            sx={{ width: "100%" }}
+          />
+        </Grid>
+
         {error && (
           <Typography variant="body2" color="error" align="center">
             {error}
@@ -144,4 +177,4 @@ function AddProducts({ closeEvent }) {
   );
 }
 
-export default AddProducts;
+export default AddOrder;

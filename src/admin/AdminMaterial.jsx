@@ -5,9 +5,9 @@ import Sidenav from "../admin/adminComponents/AdminSidenav";
 import Navbar from "../admin/adminComponents/AdminNavbar";
 import Box from "@mui/material/Box";
 import "../styles/Dashboard.css";
-import ProductList from "./adminProduct/ProductList";
+import List from "./adminMaterial/List";
 
-function AdminAbout() {
+function AdminMaterial() {
 
   const [user, setUser] = useState({ firstname: '', email: '', id: '' });
   const navigate = useNavigate();
@@ -35,11 +35,11 @@ function AdminAbout() {
         <Sidenav />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <ProductList />
+          <List />
         </Box>
       </Box>
     </div>
   );
 }
 
-export default AdminAbout;
+export default AdminMaterial;

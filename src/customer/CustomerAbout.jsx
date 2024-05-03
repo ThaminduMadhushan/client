@@ -14,7 +14,7 @@ function CustomerAbout() {
         <Sidenav />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <h1>About</h1>
+          
           <OrderList />
         </Box>
       </Box>
