@@ -56,6 +56,8 @@ export default function OrderList() {
     fetchOrders();
   }, []);
 
+  
+
   const fetchOrders = async () => {
     try {
       const response = await fetch("http://localhost:3001/api/orders");
@@ -257,6 +259,9 @@ export default function OrderList() {
                   Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
+                  User Name
+                </TableCell>
+                <TableCell align="left" style={{ minWidth: "100px" }}>
                   Material Type
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
@@ -289,6 +294,9 @@ export default function OrderList() {
                     >
                       <TableCell key={row.id} align={"left"}>
                         {row.name}
+                      </TableCell>
+                      <TableCell key={row.id} align={"left"}>
+                        {row.username}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
                         {row.material}

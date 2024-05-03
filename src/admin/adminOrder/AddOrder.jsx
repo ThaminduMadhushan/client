@@ -6,7 +6,8 @@ import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function AddOrder({ closeEvent }) {
   const [name, setName] = useState("");
@@ -16,6 +17,7 @@ function AddOrder({ closeEvent }) {
   const [status, setStatus] = useState("");
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
+  const [username, setUserName] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -71,6 +73,7 @@ function AddOrder({ closeEvent }) {
         quantity: quantityValue,
         price,
         status,
+        username,
       }),
     })
       .then((response) => {
@@ -91,6 +94,24 @@ function AddOrder({ closeEvent }) {
         closeEvent();
       });
   };
+
+  const [user, setUser] = useState({ firstname: '', email: '', id: '' });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/api/auth/authenticated', { withCredentials: true })
+      .then(res => {
+        if (res.data.authenticated) {
+          setUser(res.data.user);
+          setUserName(res.data.user.firstname);
+        } else {
+          navigate('/login');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, [navigate]);
 
   return (
     <div>
