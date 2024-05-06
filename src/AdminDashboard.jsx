@@ -38,8 +38,9 @@ function AdminDashboard() {
   return (
     <div>
       <h1>Admin Dashboard</h1>
-      <p>Welcome, {user.firstname} (ID: {user.id})</p>
+      <p>Welcome, {user.id}</p>
       <p>Email: {user.email}</p>
+      <p>Role: {user.role}</p>
     </div>
   );
 }

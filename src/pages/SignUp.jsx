@@ -37,6 +37,7 @@ export default function SignUp() {
     lastname: '',
     email: '',
     password: '',
+    role:'',
   });
 
   const [error, setError] = useState(null);
@@ -141,6 +142,17 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="role"
+                  label="Role"
+                  type="text"
+                  id="password"
                   onChange={handleChange}
                 />
               </Grid>
