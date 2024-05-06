@@ -9,7 +9,7 @@ import { Navigate } from "react-router-dom";
 
 function AddProducts({ closeEvent }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [unit_price, setPrice] = useState("");
   const [error, setError] = useState("");
 
   const handleNameChange = (event) => {
@@ -31,7 +31,7 @@ function AddProducts({ closeEvent }) {
       },
       body: JSON.stringify({
         name,
-        price
+        unit_price
       }),
     })
     .then(response => {
@@ -99,7 +99,7 @@ function AddProducts({ closeEvent }) {
             InputProps={{
               startAdornment: "Rs.",
             }}
-            value={price}
+            value={unit_price}
             onChange={handlePriceChange}
             sx={{ width: "100%" }}
           >

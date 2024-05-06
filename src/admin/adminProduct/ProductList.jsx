@@ -209,7 +209,10 @@ export default function ProductList() {
                   Quantity
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Date
+                  Created Date
+                </TableCell>
+                <TableCell align="left" style={{ minWidth: "100px" }}>
+                  Updated Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Action
@@ -231,13 +234,16 @@ export default function ProductList() {
                         {row.name}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.price}
+                        {row.unit_price}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.quantity}
+                        {row.total_quantity}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.date}
+                        {row.created_at}
+                      </TableCell>
+                      <TableCell key={row.id} align={"left"}>
+                        {row.updated_at}
                       </TableCell>
                       <TableCell align={"left"}>
                         <Stack spacing={2}>
@@ -248,7 +254,7 @@ export default function ProductList() {
                               cursor: "pointer",
                             }}
                             className="cursor-pointer"
-                            onClick={() => handleOpenEditModal(row.id)} // Pass the product ID to the edit modal
+                            onClick={() => handleOpenEditModal(row.product_id)} // Pass the product ID to the edit modal
                           />
                           <DeleteIcon
                             style={{
@@ -257,7 +263,7 @@ export default function ProductList() {
                               cursor: "pointer",
                             }}
                             className="cursor-pointer"
-                            onClick={() => deleteUser(row.id)}
+                            onClick={() => deleteUser(row.product_id)}
                           />
                         </Stack>
                       </TableCell>

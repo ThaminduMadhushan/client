@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 function EditProduct({ closeEvent, productId }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [unit_price, setPrice] = useState("");
   const [error, setError] = useState("");
 
   const handleNameChange = (event) => {
@@ -28,7 +28,7 @@ function EditProduct({ closeEvent, productId }) {
       },
       body: JSON.stringify({
         name,
-        price // Send the parsed integer value for quantity
+        unit_price // Send the parsed integer value for quantity
       }),
     })
     .then(response => {
@@ -54,6 +54,7 @@ function EditProduct({ closeEvent, productId }) {
         'Failed to update the product.',
         'error'
       );
+      closeEvent();
     });
   };
 
@@ -92,7 +93,7 @@ function EditProduct({ closeEvent, productId }) {
             InputProps={{
               startAdornment: "Rs.",
             }}
-            value={price}
+            value={unit_price}
             onChange={handlePriceChange}
             sx={{ width: "100%" }}
           >
