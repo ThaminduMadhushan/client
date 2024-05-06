@@ -18,8 +18,8 @@ import Modal from "@mui/material/Modal";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
-import AddOrders from "./AddMaterial";
-import EditOrders from "./EditMaterial";
+import AddMaterials from "./AddMaterial";
+import EditMaterials from "./EditMaterial";
 
 const style = {
   position: "absolute",
@@ -33,38 +33,38 @@ const style = {
   p: 4,
 };
 
-export default function OrderList() {
+export default function MaterialList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [editOrderId, setEditOrderId] = useState(null);
+  const [editMaterialId, setEditMaterialId] = useState(null);
 
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const handleOpenEditModal = (orderId) => {
-    setEditOrderId(orderId);
+  const handleOpenEditModal = (materialId) => {
+    setEditMaterialId(materialId);
     setOpenEditModal(true);
   };
 
   const handleCloseEditModal = () => setOpenEditModal(false);
 
   useEffect(() => {
-    fetchOrders();
+    fetchMaterials();
   }, []);
 
-  const fetchOrders = async () => {
+  const fetchMaterials = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/orders");
+      const response = await fetch("http://localhost:3001/api/materials");
       if (!response.ok) {
-        throw new Error("Failed to fetch orders");
+        throw new Error("Failed to fetch materials");
       }
       const data = await response.json();
       setRows(data);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      console.error("Error fetching materials:", error);
     }
   };
 
@@ -91,14 +91,14 @@ export default function OrderList() {
 
       if (confirmed.isConfirmed) {
         const response = await fetch(
-          `http://localhost:3001/api/orders/${id}`,
+          `http://localhost:3001/api/materials/${id}`,
           {
             method: "DELETE",
           }
         );
 
         if (!response.ok) {
-          throw new Error("Failed to delete order");
+          throw new Error("Failed to delete material");
         }
 
         const newRows = rows.filter((row) => row.id !== id);
@@ -106,13 +106,13 @@ export default function OrderList() {
 
         Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
           () => {
-            // Optionally, you can perform additional actions after the user clicks "OK"
+            window.location.reload();
           }
         );
       }
     } catch (error) {
-      console.error("Error deleting order:", error);
-      Swal.fire("Error!", "Failed to delete the order.", "error");
+      console.error("Error deleting material:", error);
+      Swal.fire("Error!", "Failed to delete the material.", "error");
     }
   };
 
@@ -121,6 +121,7 @@ export default function OrderList() {
       setRows([v]);
     } else {
       setRows([]);
+      window.location.reload();
     }
   };
 
@@ -133,7 +134,7 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <AddOrders closeEvent={handleCloseAddModal} />
+            <AddMaterials closeEvent={handleCloseAddModal} />
           </Box>
         </Modal>
         <Modal
@@ -142,15 +143,25 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <EditOrders
+            <EditMaterials
               closeEvent={handleCloseEditModal}
-              orderId={editOrderId}
+              materialId={editMaterialId}
             />
           </Box>
         </Modal>
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          sx={{ padding: "20px" }}
+        >
+          Materials
+        </Typography>
+        <Divider />
         <Box height={10} />
+        
         <div
           style={{
             display: "flex",
@@ -180,7 +191,7 @@ export default function OrderList() {
             onClick={handleOpenAddModal}
             size="large"
           >
-            Add Order
+            Add Material
           </Button>
         </div>
 
@@ -192,19 +203,16 @@ export default function OrderList() {
                   Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Material Type
+                  Price
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Quantity
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Price
+                  Created Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Date
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Status
+                  Updated Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Action
@@ -226,19 +234,16 @@ export default function OrderList() {
                         {row.name}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.material}
+                        {row.unit_price}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.quantity}
+                        {row.total_quantity}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.price}
+                        {row.created_at}
                       </TableCell>
                       <TableCell key={row.id} align={"left"}>
-                        {row.date}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.status}
+                        {row.updated_at}
                       </TableCell>
                       <TableCell align={"left"}>
                         <Stack spacing={2}>
@@ -249,7 +254,7 @@ export default function OrderList() {
                               cursor: "pointer",
                             }}
                             className="cursor-pointer"
-                            onClick={() => handleOpenEditModal(row.id)} // Pass the order ID to the edit modal
+                            onClick={() => handleOpenEditModal(row.material_id)} // Pass the material ID to the edit modal
                           />
                           <DeleteIcon
                             style={{
@@ -258,7 +263,7 @@ export default function OrderList() {
                               cursor: "pointer",
                             }}
                             className="cursor-pointer"
-                            onClick={() => deleteUser(row.id)}
+                            onClick={() => deleteUser(row.material_id)}
                           />
                         </Stack>
                       </TableCell>

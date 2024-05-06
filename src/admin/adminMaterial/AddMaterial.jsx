@@ -7,10 +7,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import Swal from 'sweetalert2';
 import { Navigate } from "react-router-dom";
 
-function AddMaterial({ closeEvent }) {
+function AddMaterials({ closeEvent }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [unit_price, setPrice] = useState("");
   const [error, setError] = useState("");
 
   const handleNameChange = (event) => {
@@ -19,56 +18,49 @@ function AddMaterial({ closeEvent }) {
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
   };
-  const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
-  };
 
   const handleSubmit = () => {
     // Convert quantity to a number
-    const quantityValue = parseInt(quantity);
     
-    if (isNaN(quantityValue)) {
-      setError("Quantity must be a number.");
-      return;
-    }
 
     // Make POST request to backend
-    fetch('http://localhost:3001/api/products', {
+    fetch('http://localhost:3001/api/materials', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name,
-        price,
-        quantity: quantityValue, // Send the parsed integer value for quantity
+        unit_price
       }),
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to add product');
+        throw new Error('Failed to add material');
       }
       return response.json();
     })
     .then(data => {
-      console.log('Product created:', data);
+      console.log('Material created:', data);
       Swal.fire(
         'Success!',
-        'Product added successfully.',
+        'Material added successfully.',
         'success'
       );
       // Close the modal after success
       closeEvent();
+      window.location.reload();
     })
     .catch((error) => {
-      console.error('Error adding product:', error);
+      console.error('Error adding material:', error);
       Swal.fire(
         'Error!',
-        'Failed to add the product.',
+        'Failed to add the material.',
         'error'
       );
       // Close the modal even if there's an error
       closeEvent();
+
     });
   };
 
@@ -76,7 +68,7 @@ function AddMaterial({ closeEvent }) {
     <div>
       <Box sx={{ m: 2 }}></Box>
       <Typography variant="h5" align="center">
-        Add Product
+        Add Material
       </Typography>
       <IconButton
         style={{ position: "absolute", top: 0, right: 0 }}
@@ -97,7 +89,7 @@ function AddMaterial({ closeEvent }) {
             sx={{ width: "100%" }}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
             id="outlined-basic"
             label="Price"
@@ -107,25 +99,13 @@ function AddMaterial({ closeEvent }) {
             InputProps={{
               startAdornment: "Rs.",
             }}
-            value={price}
+            value={unit_price}
             onChange={handlePriceChange}
             sx={{ width: "100%" }}
           >
           </TextField>
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-basic"
-            label="Quantity"
-            variant="outlined"
-            size="small"
-            type="number"
-            value={quantity}
-            onChange={handleQuantityChange}
-            sx={{ width: "100%" }}
-          >
-          </TextField>
-        </Grid>
+        
         {error && (
           <Typography variant="body2" color="error" align="center">
             {error}
@@ -144,4 +124,4 @@ function AddMaterial({ closeEvent }) {
   );
 }
 
-export default AddMaterial;
+export default AddMaterials;

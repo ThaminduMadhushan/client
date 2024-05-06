@@ -59,16 +59,16 @@ export default function List() {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="User Details" {...a11yProps(0)} />
-              <Tab label="Edit Details" {...a11yProps(1)} />    
-              <Tab label="Change Password" {...a11yProps(2)} />
+              <Tab label="Material" {...a11yProps(0)} />
+              <Tab label="Collection" {...a11yProps(1)} />    
+              <Tab label="Item Three" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
             <MaterialList />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <MaterialList />
+            Item  two
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
             Item Three

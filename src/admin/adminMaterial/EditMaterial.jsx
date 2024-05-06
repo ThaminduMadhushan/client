@@ -6,10 +6,9 @@ import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from 'sweetalert2';
 
-function EditMaterial({ closeEvent, productId }) {
+function EditMaterial({ closeEvent, materialId }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [unit_price, setPrice] = useState("");
   const [error, setError] = useState("");
 
   const handleNameChange = (event) => {
@@ -18,53 +17,44 @@ function EditMaterial({ closeEvent, productId }) {
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
   };
-  const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
-  };
 
   const handleSubmit = () => {
-    // Convert quantity to a number
-    const quantityValue = parseInt(quantity);
-    
-    if (isNaN(quantityValue)) {
-      setError("Quantity must be a number.");
-      return;
-    }
 
     // Make PUT request to backend
-    fetch(`http://localhost:3001/api/products/${productId}`, {
+    fetch(`http://localhost:3001/api/materials/${materialId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name,
-        price,
-        quantity: quantityValue, // Send the parsed integer value for quantity
+        unit_price // Send the parsed integer value for quantity
       }),
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to update product');
+        throw new Error('Failed to update material');
       }
       return response.json();
     })
     .then(data => {
-      console.log('Product updated:', data);
+      console.log('Material updated:', data);
       Swal.fire(
         'Updated!',
-        'Your product has been updated.',
+        'Your material has been updated.',
         'success'
       );
       closeEvent();
+      window.location.reload();
     })
     .catch((error) => {
-      console.error('Error updating product:', error);
+      console.error('Error updating material:', error);
       Swal.fire(
         'Error!',
-        'Failed to update the product.',
+        'Failed to update the material.',
         'error'
       );
+      closeEvent();
     });
   };
 
@@ -72,7 +62,7 @@ function EditMaterial({ closeEvent, productId }) {
     <div>
       <Box sx={{ m: 2 }}></Box>
       <Typography variant="h5" align="center">
-        Edit Product
+        Edit Material
       </Typography>
       <IconButton
         style={{ position: "absolute", top: 0, right: 0 }}
@@ -93,7 +83,7 @@ function EditMaterial({ closeEvent, productId }) {
             sx={{ width: "100%" }}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <TextField
             id="outlined-basic"
             label="Price"
@@ -103,25 +93,13 @@ function EditMaterial({ closeEvent, productId }) {
             InputProps={{
               startAdornment: "Rs.",
             }}
-            value={price}
+            value={unit_price}
             onChange={handlePriceChange}
             sx={{ width: "100%" }}
           >
           </TextField>
         </Grid>
-        <Grid item xs={6}>
-          <TextField
-            id="outlined-basic"
-            label="Quantity"
-            variant="outlined"
-            size="small"
-            type="number"
-            value={quantity}
-            onChange={handleQuantityChange}
-            sx={{ width: "100%" }}
-          >
-          </TextField>
-        </Grid>
+        
         {error && (
           <Typography variant="body2" color="error" align="center">
             {error}
@@ -130,7 +108,7 @@ function EditMaterial({ closeEvent, productId }) {
         <Grid item xs={12}>
           <Typography variant="h5" align="center">
             <Button variant="contained" onClick={handleSubmit}>
-              Submit
+              Update
             </Button>
           </Typography>
         </Grid>
