@@ -11,6 +11,9 @@ function AdminDashboard() {
       .then(res => {
         if (res.data.authenticated) {
           setUser(res.data.user);
+          // if (res.data.user.role !== 'admin') {
+          //   navigate('/');
+          // }
         } else {
           navigate('/login');
         }
@@ -20,20 +23,6 @@ function AdminDashboard() {
       });
   }, [navigate]);
 
-  useEffect(() => {
-    axios.get('http://localhost:3001/api/auth/authenticated')
-      .then(res => {
-        if (!res.data.authenticated) {
-          navigate('/login');
-        } else {
-          setUser(res.data.user);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
-  
 
   return (
     <div>
