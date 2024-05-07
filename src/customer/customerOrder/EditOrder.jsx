@@ -4,15 +4,15 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
 
 function EditOrder({ closeEvent, orderId }) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
   const [error, setError] = useState("");
-  const [material, setMaterial] = useState("");
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -38,15 +38,12 @@ function EditOrder({ closeEvent, orderId }) {
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
-    calculatePrice(event.target.value, material);
+    calculatePrice(event.target.value, selectedProduct);
   };
 
-  const calculatePrice = (quantity, material) => {
-    const selectedMaterial = products.find(
-      (m) => m.name === material
-    );
-    if (selectedMaterial) {
-      const totalPrice = selectedMaterial.price * parseInt(quantity);
+  const calculatePrice = (quantity, selectedProduct) => {
+    if (selectedProduct) {
+      const totalPrice = selectedProduct.unit_price * parseInt(quantity);
       setPrice(totalPrice);
     }
   };
@@ -54,49 +51,47 @@ function EditOrder({ closeEvent, orderId }) {
   const handleSubmit = () => {
     // Convert quantity to a number
     const quantityValue = parseInt(quantity);
-    
+
     if (isNaN(quantityValue)) {
       setError("Quantity must be a number.");
       return;
     }
 
+    if (!selectedProduct) {
+      setError("Please select a product.");
+      return;
+    }
+
     // Make PUT request to backend
     fetch(`http://localhost:3001/api/orders/${orderId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name,
-        material,
+        product_id: selectedProduct.product_id,
         quantity: quantityValue,
-        price
+        price,
       }),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to update Order');
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Order updated:', data);
-      Swal.fire(
-        'Updated!',
-        'Your Order has been updated.',
-        'success'
-      );
-      closeEvent();
-      window.location.reload();
-    })
-    .catch((error) => {
-      console.error('Error updating Order:', error);
-      Swal.fire(
-        'Error!',
-        'Failed to update the Order.',
-        'error'
-      );
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to update Order");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Order updated:", data);
+        Swal.fire("Updated!", "Your Order has been updated.", "success");
+        closeEvent();
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error updating Order:", error);
+        Swal.fire("Error!", "Failed to update the Order.", "error");
+        closeEvent();
+      });
   };
 
   return (
@@ -117,7 +112,7 @@ function EditOrder({ closeEvent, orderId }) {
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Name"
+            label="Order Name"
             variant="outlined"
             size="small"
             value={name}
@@ -127,16 +122,16 @@ function EditOrder({ closeEvent, orderId }) {
         </Grid>
         <Grid item xs={12}>
           <Autocomplete
-            value={material}
+            value={selectedProduct}
             onChange={(event, newValue) => {
-              setMaterial(newValue);
+              setSelectedProduct(newValue);
               calculatePrice(quantity, newValue);
             }}
-            id="material-autocomplete"
-            options={products.map((material) => material.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Material Type" />
-            )}
+            id="product-autocomplete"
+            options={products}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => <TextField {...params} label="Product" />}
+            fullWidth
           />
         </Grid>
         <Grid item xs={6}>
@@ -166,9 +161,22 @@ function EditOrder({ closeEvent, orderId }) {
             sx={{ width: "100%" }}
           />
         </Grid>
+        {error && (
+          <Grid item xs={12}>
+            <Typography variant="body2" color="error" align="center">
+              {error}
+            </Typography>
+          </Grid>
+        )}
+        <Grid item xs={12}>
+          <Typography variant="h5" align="center">
+            <Button variant="contained" onClick={handleSubmit}>
+              Update
+            </Button>
+          </Typography>
+        </Grid>
       </Grid>
       <Box sx={{ m: 2 }}></Box>
-      <Button variant="contained" onClick={handleSubmit}>Update</Button>
     </div>
   );
 }

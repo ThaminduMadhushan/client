@@ -7,9 +7,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
 
-function AddOrder({ closeEvent }) {
+function AddOrder({ closeEvent, customerId }) {
   const [name, setName] = useState("");
-  const [material, setMaterial] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [status, setStatus] = useState("");
@@ -39,15 +39,12 @@ function AddOrder({ closeEvent }) {
 
   const handleQuantityChange = (event) => {
     setQuantity(event.target.value);
-    calculatePrice(event.target.value, material);
+    calculatePrice(event.target.value, selectedProduct);
   };
 
-  const calculatePrice = (quantity, material) => {
-    const selectedMaterial = products.find(
-      (m) => m.name === material
-    );
-    if (selectedMaterial) {
-      const totalPrice = selectedMaterial.price * parseInt(quantity);
+  const calculatePrice = (quantity, selectedProduct) => {
+    if (selectedProduct) {
+      const totalPrice = selectedProduct.unit_price * parseInt(quantity);
       setPrice(totalPrice);
     }
   };
@@ -59,14 +56,20 @@ function AddOrder({ closeEvent }) {
       return;
     }
 
+    if (!selectedProduct) {
+      setError("Please select a product.");
+      return;
+    }
+
     fetch("http://localhost:3001/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        customer_id: customerId,
         name,
-        material,
+        product_id: selectedProduct.product_id,
         quantity: quantityValue,
         price,
         status,
@@ -107,32 +110,32 @@ function AddOrder({ closeEvent }) {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
-            id="outlined-basic"
-            label="Name"
+            id="name"
+            label="Order Name"
             variant="outlined"
             size="small"
             value={name}
             onChange={handleNameChange}
-            sx={{ width: "100%" }}
+            fullWidth
           />
         </Grid>
         <Grid item xs={12}>
           <Autocomplete
-            value={material}
+            value={selectedProduct}
             onChange={(event, newValue) => {
-              setMaterial(newValue);
+              setSelectedProduct(newValue);
               calculatePrice(quantity, newValue);
             }}
-            id="material-autocomplete"
-            options={products.map((material) => material.name)}
-            renderInput={(params) => (
-              <TextField {...params} label="Material Type" />
-            )}
+            id="product-autocomplete"
+            options={products}
+            getOptionLabel={(option) => option.name}
+            renderInput={(params) => <TextField {...params} label="Product" />}
+            fullWidth
           />
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="outlined-basic"
+            id="quantity"
             label="Quantity"
             variant="outlined"
             size="small"
@@ -142,26 +145,28 @@ function AddOrder({ closeEvent }) {
             InputProps={{
               endAdornment: "Kg",
             }}
-            sx={{ width: "100%" }}
+            fullWidth
           />
         </Grid>
         <Grid item xs={6}>
           <TextField
-            id="outlined-basic"
+            id="price"
             label="Price"
             variant="outlined"
             size="small"
             type="text"
             value={price}
             readOnly
-            sx={{ width: "100%" }}
+            fullWidth
           />
         </Grid>
 
         {error && (
-          <Typography variant="body2" color="error" align="center">
-            {error}
-          </Typography>
+          <Grid item xs={12}>
+            <Typography variant="body2" color="error" align="center">
+              {error}
+            </Typography>
+          </Grid>
         )}
         <Grid item xs={12}>
           <Typography variant="h5" align="center">

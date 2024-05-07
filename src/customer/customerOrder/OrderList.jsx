@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -34,6 +36,9 @@ const style = {
 };
 
 export default function OrderList() {
+  const [user, setUser] = useState();
+  const [userId, setUserId] = useState();
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -51,38 +56,6 @@ export default function OrderList() {
 
   const handleCloseEditModal = () => setOpenEditModal(false);
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  const fetchOrders = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/api/orders");
-      if (!response.ok) {
-      
-        throw new Error("Failed to fetch orders");
-      }
-      const data = await response.json();
-      setRows(data);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
-  };
-
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3001/api/products");
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch products");
-  //     }
-  //     const data = await response.json();
-  //     // setRows(data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
-
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -92,6 +65,56 @@ export default function OrderList() {
     setPage(0);
   };
 
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/auth/authenticated", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.authenticated) {
+          setUser(res.data.user);
+          customerId(res.data.user.id);
+
+        } else {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const customerId = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/customer/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch customer id");
+      }
+      const data = await response.json();
+      setUserId(data.customer_id);
+      fetchOrders(data.customer_id); // Assuming data is an array of objects
+    } catch (error) {
+      console.error("Error fetching customer id:", error);
+    }
+  };
+  const fetchOrders = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/orders/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+      const data = await response.json();
+      setRows(data); // Assuming data is an array of objects
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
   const deleteUser = async (id) => {
     try {
       const confirmed = await Swal.fire({
@@ -105,12 +128,9 @@ export default function OrderList() {
       });
 
       if (confirmed.isConfirmed) {
-        const response = await fetch(
-          `http://localhost:3001/api/orders/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(`http://localhost:3001/api/orders/${id}`, {
+          method: "DELETE",
+        });
 
         if (!response.ok) {
           throw new Error("Failed to delete order");
@@ -119,11 +139,8 @@ export default function OrderList() {
         const newRows = rows.filter((row) => row.id !== id);
         setRows(newRows);
 
-        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
-          () => {
-            window.location.reload();
-          }
-        );
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error deleting order:", error);
@@ -136,6 +153,7 @@ export default function OrderList() {
       setRows([v]);
     } else {
       setRows([]);
+      fetchOrders();
       window.location.reload();
     }
   };
@@ -149,7 +167,7 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <AddOrders closeEvent={handleCloseAddModal} />
+            <AddOrders closeEvent={handleCloseAddModal} customerId={userId} />
           </Box>
         </Modal>
         <Modal
@@ -193,7 +211,7 @@ export default function OrderList() {
             onChange={(e, v) => {
               filterData(v);
             }}
-            getOptionLabel={(rows) => rows.name || ""}
+            getOptionLabel={(rows) => rows.order_name || ""}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" />
             )}
@@ -217,7 +235,7 @@ export default function OrderList() {
                   Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Material Type
+                  Product Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Quantity
@@ -226,7 +244,10 @@ export default function OrderList() {
                   Price
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Date
+                  Create Date
+                </TableCell>
+                <TableCell align="left" style={{ minWidth: "100px" }}>
+                  Update Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Status
@@ -239,62 +260,63 @@ export default function OrderList() {
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      <TableCell key={row.id} align={"left"}>
-                        {row.name}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.material}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.quantity}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.price}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.date}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.status}
-                      </TableCell>
-                      <TableCell align={"left"}>
-                        <Stack spacing={2}>
-                          <EditIcon
-                            style={{
-                              fontSize: "20px",
-                              color: "#02294F",
-                              cursor: "pointer",
-                            }}
-                            className="cursor-pointer"
-                            onClick={() => handleOpenEditModal(row.id)} // Pass the order ID to the edit modal
-                          />
-                          <DeleteIcon
-                            style={{
-                              fontSize: "20px",
-                              color: "#02294F",
-                              cursor: "pointer",
-                            }}
-                            className="cursor-pointer"
-                            onClick={() => deleteUser(row.id)}
-                          />
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                .map((row) => (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.code}
+                  >
+                    <TableCell key={row.id} align={"left"}>
+                      {row.order_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.product_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.price}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.created_at}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.updated_at}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.status}
+                    </TableCell>
+                    <TableCell align={"left"}>
+                      <Stack spacing={2}>
+                        <EditIcon
+                          style={{
+                            fontSize: "20px",
+                            color: "#02294F",
+                            cursor: "pointer",
+                          }}
+                          className="cursor-pointer"
+                          onClick={() => handleOpenEditModal(row.order_id)} // Pass the order ID to the edit modal
+                        />
+                        <DeleteIcon
+                          style={{
+                            fontSize: "20px",
+                            color: "#02294F",
+                            cursor: "pointer",
+                          }}
+                          className="cursor-pointer"
+                          onClick={() => deleteUser(row.order_id)}
+                        />
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
@@ -306,3 +328,4 @@ export default function OrderList() {
     </>
   );
 }
+
