@@ -41,12 +41,16 @@ function App() {
           <Route path="/admin/material" element={<AdminMaterial />}></Route>
           <Route path="/admin/order" element={<AdminOrder />}></Route>
 
-          <Route path="/employee/home" element={<EmployeeHome />}></Route>
-          <Route path="/employee/about" element={<EmployeeAbout />}></Route>
-          <Route path="/employee/setting" element={<EmployeeSetting />}></Route>
+          <Route path="/bailer/home" element={<EmployeeHome />}></Route>
+          <Route path="/bailer/about" element={<EmployeeAbout />}></Route>
+          <Route path="/bailer/setting" element={<EmployeeSetting />}></Route>
+
+          <Route path="/driver/home" element={<EmployeeHome />}></Route>
+          <Route path="/driver/about" element={<EmployeeAbout />}></Route>
+          <Route path="/driver/setting" element={<EmployeeSetting />}></Route>
 
           <Route path="/customer/home" element={<CustomerHome />}></Route>
-          <Route path="/customer/about" element={<CustomerAbout />}></Route>
+          <Route path="/customer/order" element={<CustomerAbout />}></Route>
           <Route path="/customer/setting" element={<CustomerSetting />}></Route>
 
           <Route path="/supplier/home" element={<SupplierHome />}></Route>
