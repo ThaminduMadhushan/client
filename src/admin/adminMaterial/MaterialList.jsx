@@ -150,14 +150,14 @@ export default function MaterialList() {
           </Box>
         </Modal>
       </div>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      
         <Typography
           gutterBottom
           variant="h5"
           component="div"
           sx={{ padding: "20px" }}
         >
-          Materials
+          Add New Materials
         </Typography>
         <Divider />
         <Box height={10} />
@@ -282,7 +282,7 @@ export default function MaterialList() {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-      </Paper>
+
     </>
   );
 }
