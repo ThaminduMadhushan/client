@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -20,7 +22,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import AddOrders from "./AddOrder";
 import EditOrders from "./EditOrder";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import DoneIcon from '@mui/icons-material/Done';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const style = {
   position: "absolute",
@@ -34,7 +37,10 @@ const style = {
   p: 4,
 };
 
-export default function OrderList() {
+export default function OrderList( closeEvent) {
+  const [user, setUser] = useState();
+  const [userId, setUserId] = useState();
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [rows, setRows] = useState([]);
@@ -52,40 +58,6 @@ export default function OrderList() {
 
   const handleCloseEditModal = () => setOpenEditModal(false);
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
-  
-
-  const fetchOrders = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/api/orders");
-      if (!response.ok) {
-      
-        throw new Error("Failed to fetch orders");
-      }
-      const data = await response.json();
-      setRows(data);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
-  };
-
-  // const fetchProducts = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:3001/api/products");
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch products");
-  //     }
-  //     const data = await response.json();
-  //     // setRows(data);
-  //   } catch (error) {
-  //     console.error("Error fetching products:", error);
-  //   }
-  // };
-
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -95,7 +67,127 @@ export default function OrderList() {
     setPage(0);
   };
 
-  const deleteUser = async (id) => {
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/auth/authenticated", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.authenticated) {
+          setUser(res.data.user);
+          AdminId(res.data.user.id);
+        } else {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const AdminId = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/admin/${userId}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch admin id");
+      }
+      const data = await response.json();
+      setUserId(data.admin_id);
+      fetchOrders(); // Fetch orders once admin id is set
+    } catch (error) {
+      console.error("Error fetching admin id:", error);
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/admin/pending`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+      const data = await response.json();
+      setRows(data); 
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  // const cancelOrder = async (id) => {
+  //   try {
+  //     const confirmed = await Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Yes, cancel it!",
+  //     });
+
+  //     if (confirmed.isConfirmed) {
+  //       const response = await fetch(`http://localhost:3001/api/orders/cancel/${id}`, {
+  //         method: "PUT",
+  //       });
+
+  //       if (!response.ok) {
+  //         throw new Error("Failed to cancel order");
+  //       }
+
+  //       const newRows = rows.filter((row) => row.id !== id);
+  //       setRows(newRows);
+
+  //       Swal.fire("Canceled!", "The order has been cancelled.", "success");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error cancelling order:", error);
+  //     Swal.fire("Error!", "Failed to cancel the order.", "error");
+  //   }
+  // };
+
+
+  // const cancelOrder = async (id) => {
+  //   try {
+  //     const confirmed = await Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Yes, cancel it!",
+  //     });
+  
+  //     if (confirmed.isConfirmed) {
+  //       const response = await fetch(`http://localhost:3001/api/orders/cancel/${id}`, {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ adminId: userId }), // Pass the admin ID here
+  //       });
+  
+  //       if (!response.ok) {
+  //         throw new Error("Failed to cancel order");
+  //       }
+  
+  //       const newRows = rows.filter((row) => row.id !== id);
+  //       setRows(newRows);
+  
+  //       Swal.fire("Canceled!", "The order has been cancelled.", "success");
+  //       closeEvent();
+        
+  //     }
+  //   } catch (error) {
+  //     console.error("Error cancelling order:", error);
+  //     Swal.fire("Error!", "Failed to cancel the order.", "error");
+  //   }
+  // };
+
+  const cancelOrder = async (id) => {
     try {
       const confirmed = await Swal.fire({
         title: "Are you sure?",
@@ -104,81 +196,43 @@ export default function OrderList() {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, cancel it!",
       });
-
+  
       if (confirmed.isConfirmed) {
-        const response = await fetch(
-          `http://localhost:3001/api/orders/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
-
+        const response = await fetch(`http://localhost:3001/api/orders/cancel/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ adminId: userId }), // Pass the admin ID here
+        });
+  
+        const responseData = await response.json(); // Parse the response JSON
+  
         if (!response.ok) {
-          throw new Error("Failed to delete order");
+          throw new Error(responseData.error || "Failed to cancel order");
         }
-
+  
         const newRows = rows.filter((row) => row.id !== id);
         setRows(newRows);
-
-        Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
-          () => {
-            window.location.reload();
-          }
-        );
+  
+        Swal.fire("Canceled!", "The order has been cancelled.", "success");
+        window.location.reload();
       }
     } catch (error) {
-      console.error("Error deleting order:", error);
-      Swal.fire("Error!", "Failed to delete the order.", "error");
+      console.error("Error cancelling order:", error);
+      Swal.fire("Error!", error.message || "Failed to cancel the order.", "error");
     }
   };
-
-  const Accept = async (id) => {
-    try {
-      const confirmed = await Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Accept it!",
-      });
-
-      if (confirmed.isConfirmed) {
-        const response = await fetch(
-          `http://localhost:3001/api/orders/accept/${id}`,
-          {
-            method: "PUT",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to Accept order");
-        }
-
-        const newRows = rows.filter((row) => row.id !== id);
-        setRows(newRows);
-
-        Swal.fire("Accept!", "The Order has been Accepted.", "success").then(
-          () => {
-            window.location.reload();
-          }
-        );
-      }
-    } catch (error) {
-      console.error("Error accept order:", error);
-      Swal.fire("Error!", "Failed to accept the order.", "error");
-    }
-  };
-
+  
+  
   const filterData = (v) => {
     if (v) {
       setRows([v]);
     } else {
       setRows([]);
-      window.location.reload();
+      fetchOrders();
     }
   };
 
@@ -191,7 +245,7 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <AddOrders closeEvent={handleCloseAddModal} />
+            <AddOrders closeEvent={handleCloseAddModal} customerId={userId} />
           </Box>
         </Modal>
         <Modal
@@ -203,20 +257,12 @@ export default function OrderList() {
             <EditOrders
               closeEvent={handleCloseEditModal}
               orderId={editOrderId}
+              adminId={userId} // Pass adminId to EditOrder component
             />
           </Box>
         </Modal>
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ padding: "20px" }}
-        >
-          ORDER
-        </Typography>
-        <Divider />
         <Box height={10} />
         <div
           style={{
@@ -235,7 +281,7 @@ export default function OrderList() {
             onChange={(e, v) => {
               filterData(v);
             }}
-            getOptionLabel={(rows) => rows.name || ""}
+            getOptionLabel={(rows) => rows.order_name || ""}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" />
             )}
@@ -250,7 +296,6 @@ export default function OrderList() {
             Add Order
           </Button>
         </div>
-
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -259,10 +304,10 @@ export default function OrderList() {
                   Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  User Name
+                  Customer Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Material Type
+                  Product Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Quantity
@@ -271,10 +316,10 @@ export default function OrderList() {
                   Price
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Date
+                  Create Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Status
+                  Update Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Action
@@ -284,66 +329,63 @@ export default function OrderList() {
             <TableBody>
               {rows
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      <TableCell key={row.id} align={"left"}>
-                        {row.name}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.username}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.material}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.quantity}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.price}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.date}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.status}
-                      </TableCell>
-                      <TableCell align={"left"}>
-                        <Stack spacing={2}>
-                          
-                          <ThumbUpIcon
-                            style={{
-                              fontSize: "20px",
-                              color: "#02294F",
-                              cursor: "pointer",
-                            }}
-                            className="cursor-pointer"
-                            onClick={() => Accept(row.id)} // Pass the order ID to the edit modal
-                          />
-                          <DeleteIcon
-                            style={{
-                              fontSize: "20px",
-                              color: "#02294F",
-                              cursor: "pointer",
-                            }}
-                            className="cursor-pointer"
-                            onClick={() => deleteUser(row.id)}
-                          />
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                .map((row) => (
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={row.id}
+                  >
+                    <TableCell key={row.id} align={"left"}>
+                      {row.order_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.customer_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.product_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.quantity}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.price}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.created_at}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.updated_at}
+                    </TableCell>
+                    <TableCell align={"left"}>
+                      <Stack spacing={2}>
+                        <DoneIcon
+                          style={{
+                            fontSize: "20px",
+                            color: "#02294F",
+                            cursor: "pointer",
+                          }}
+                          className="cursor-pointer"
+                          onClick={() => handleOpenEditModal(row.order_id)} // Pass the order ID to the edit modal
+                        />
+                        <CancelIcon
+                          style={{
+                            fontSize: "20px",
+                            color: "#02294F",
+                            cursor: "pointer",
+                          }}
+                          className="cursor-pointer"
+                          onClick={() => cancelOrder(row.order_id)}
+                        />
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
+          rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
