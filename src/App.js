@@ -7,7 +7,7 @@ import LandingPage from "./LandingPage/LandingPage.jsx";
 import AdminDashboard from "./AdminDashboard.jsx";
 
 import AdminHome from "./admin/AdminHome.jsx";
-import AdminAbout from "./admin/AdminAbout.jsx";
+import AdminProduct from "./admin/AdminProduct.jsx";
 import AdminSetting from "./admin/AdminSetting.jsx";
 import AdminMaterial from "./admin/AdminMaterial.jsx";
 import AdminOrder from "./admin/AdminOrder.jsx";
@@ -36,7 +36,7 @@ function App() {
           <Route path="/details" element={<AdminDashboard />}></Route>
 
           <Route path="/admin/home" element={<AdminHome />}></Route>
-          <Route path="/admin/about" element={<AdminAbout />}></Route>
+          <Route path="/admin/Product" element={<AdminProduct />}></Route>
           <Route path="/admin/setting" element={<AdminSetting />}></Route>
           <Route path="/admin/material" element={<AdminMaterial />}></Route>
           <Route path="/admin/order" element={<AdminOrder />}></Route>

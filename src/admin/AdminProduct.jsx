@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import "../styles/Dashboard.css";
 import ProductList from "./adminProduct/ProductList";
 
-function AdminAbout() {
+function AdminProduct() {
 
   const [user, setUser] = useState({ firstname: '', email: '', id: '' });
   const navigate = useNavigate();
@@ -42,4 +42,4 @@ function AdminAbout() {
   );
 }
 
-export default AdminAbout;
+export default AdminProduct;

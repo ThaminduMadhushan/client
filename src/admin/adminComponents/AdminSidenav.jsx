@@ -107,7 +107,7 @@ export default function AdminSidenav() {
                 <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/admin/about")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/admin/product")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
