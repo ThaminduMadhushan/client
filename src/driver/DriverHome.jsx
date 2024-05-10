@@ -1,6 +1,6 @@
 import React from "react";
-import Sidenav from "../employee/employeeComponents/EmployeeSidenav";
-import Navbar from "../employee/employeeComponents/EmployeeNavbar";
+import Sidenav from "../driver/driverComponents/DriverSidenav";
+import Navbar from "../driver/driverComponents/DriverNavbar";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -11,7 +11,7 @@ import "../styles/Dashboard.css";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import AccordionDashboard from "../components/AccordionDashboard";
+import AccordionDashboard from "../driver/driverComponents/DriverAccordionDashboard";
 import CountUp from "react-countup";
 
 export default function EmployeeHome() {

@@ -1,11 +1,11 @@
 import React from "react";
-import Sidenav from "../employee/employeeComponents/EmployeeSidenav";
-import Navbar from "../employee/employeeComponents/EmployeeNavbar";
+import Sidenav from "../bailer/bailerComponents/BailerSidenav";
+import Navbar from "../bailer/bailerComponents/BailerNavbar";
 import Box from "@mui/material/Box";
 import "../styles/Dashboard.css";
-import OrderList from "./employeeOrder/OrderList";
+import OrderList from "./bailerOrder/OrderList";
 
-function EmployeeAbout() {
+function BailerAbout() {
   return (
     <div className="backgroundColor">
       <Navbar />
@@ -22,4 +22,4 @@ function EmployeeAbout() {
   );
 }
 
-export default EmployeeAbout;
+export default BailerAbout;

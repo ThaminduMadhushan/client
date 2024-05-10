@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 
-export default function EmployeeAccordionDashboard() {
+export default function DriverAccordionDashboard() {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpansion = () => {

@@ -12,9 +12,13 @@ import AdminSetting from "./admin/AdminSetting.jsx";
 import AdminMaterial from "./admin/AdminMaterial.jsx";
 import AdminOrder from "./admin/AdminOrder.jsx";
 
-import EmployeeHome from "./employee/EmployeeHome.jsx";
-import EmployeeAbout from "./employee/EmployeeAbout.jsx";
-import EmployeeSetting from "./employee/EmployeeSetting.jsx";
+import BailerHome from "./employee/BailerHome.jsx";
+import BailerAbout from "./employee/BailerAbout.jsx";
+import BailerSetting from "./employee/BailerSetting.jsx";
+
+import DriverHome from "./employee/DriverHome.jsx";
+import DriverAbout from "./employee/DriverAbout.jsx";
+import DriverSetting from "./employee/DriverSetting.jsx";
 
 import CustomerHome from "./customer/CustomerHome.jsx";
 import CustomerAbout from "./customer/CustomerAbout.jsx";
@@ -41,13 +45,13 @@ function App() {
           <Route path="/admin/material" element={<AdminMaterial />}></Route>
           <Route path="/admin/order" element={<AdminOrder />}></Route>
 
-          <Route path="/bailer/home" element={<EmployeeHome />}></Route>
-          <Route path="/bailer/about" element={<EmployeeAbout />}></Route>
-          <Route path="/bailer/setting" element={<EmployeeSetting />}></Route>
+          <Route path="/bailer/home" element={<BailerHome />}></Route>
+          <Route path="/bailer/about" element={<BailerAbout />}></Route>
+          <Route path="/bailer/setting" element={<BailerSetting />}></Route>
 
-          <Route path="/driver/home" element={<EmployeeHome />}></Route>
-          <Route path="/driver/about" element={<EmployeeAbout />}></Route>
-          <Route path="/driver/setting" element={<EmployeeSetting />}></Route>
+          <Route path="/driver/home" element={<DriverHome />}></Route>
+          <Route path="/driver/about" element={<DriverAbout />}></Route>
+          <Route path="/driver/setting" element={<DriverSetting />}></Route>
 
           <Route path="/customer/home" element={<CustomerHome />}></Route>
           <Route path="/customer/order" element={<CustomerAbout />}></Route>

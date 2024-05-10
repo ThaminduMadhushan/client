@@ -1,0 +1,24 @@
+import React from "react";
+import Sidenav from "../bailer/bailerComponents/BailerSidenav";
+import Navbar from "../bailer/bailerComponents/BailerNavbar";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import List from "./bailerSetting/List";
+
+function BailerSetting() {
+  return (
+    <div className="backgroundColor">
+      <Navbar />
+      <Box height={30} />
+      <Box sx={{ display: "flex" }}>
+        <Sidenav />
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <h1>Setting</h1>
+          <List />
+        </Box>
+      </Box>
+    </div>
+  );
+}
+
+export default BailerSetting;

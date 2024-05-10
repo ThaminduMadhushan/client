@@ -1,9 +1,9 @@
 import React from "react";
-import Sidenav from "../employee/employeeComponents/EmployeeSidenav";
-import Navbar from "../employee/employeeComponents/EmployeeNavbar";
+import Sidenav from "../driver/driverComponents/DriverSidenav";
+import Navbar from "../driver/driverComponents/DriverNavbar";;
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import List from "./employeeSetting/List";
+import List from "./driverSetting/List";
 
 function EmployeeSetting() {
   return (
