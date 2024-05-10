@@ -12,13 +12,13 @@ import AdminSetting from "./admin/AdminSetting.jsx";
 import AdminMaterial from "./admin/AdminMaterial.jsx";
 import AdminOrder from "./admin/AdminOrder.jsx";
 
-import BailerHome from "./employee/BailerHome.jsx";
-import BailerAbout from "./employee/BailerAbout.jsx";
-import BailerSetting from "./employee/BailerSetting.jsx";
+import BailerHome from "./bailer/BailerHome.jsx";
+import BailerAbout from "./bailer/BailerAbout.jsx";
+import BailerSetting from "./bailer/BailerSetting.jsx";
 
-import DriverHome from "./employee/DriverHome.jsx";
-import DriverAbout from "./employee/DriverAbout.jsx";
-import DriverSetting from "./employee/DriverSetting.jsx";
+import DriverHome from "./driver/DriverHome.jsx";
+import DriverAbout from "./driver/DriverAbout.jsx";
+import DriverSetting from "./driver/DriverSetting.jsx";
 
 import CustomerHome from "./customer/CustomerHome.jsx";
 import CustomerAbout from "./customer/CustomerAbout.jsx";

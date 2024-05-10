@@ -14,7 +14,7 @@ import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import AccordionDashboard from "../driver/driverComponents/DriverAccordionDashboard";
 import CountUp from "react-countup";
 
-export default function EmployeeHome() {
+export default function BalerHome() {
   return (
     <div className="backgroundColor">
       <Navbar />

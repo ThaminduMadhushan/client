@@ -1,11 +1,11 @@
 import React from "react";
 import Sidenav from "../driver/driverComponents/DriverSidenav";
-import Navbar from "../driver/driverComponents/DriverNavbar";;
+import Navbar from "../driver/driverComponents/DriverNavbar";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import List from "./driverSetting/List";
+import List from "../driver/driverSetting/List";
 
-function EmployeeSetting() {
+function DriverSetting() {
   return (
     <div className="backgroundColor">
       <Navbar />
@@ -21,4 +21,4 @@ function EmployeeSetting() {
   );
 }
 
-export default EmployeeSetting;
+export default DriverSetting;

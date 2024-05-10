@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import "../styles/Dashboard.css";
 import OrderList from "./driverOrder/OrderList";
 
-function EmployeeAbout() {
+function BailerAbout() {
   return (
     <div className="backgroundColor">
       <Navbar />
@@ -22,4 +22,4 @@ function EmployeeAbout() {
   );
 }
 
-export default EmployeeAbout;
+export default BailerAbout;
