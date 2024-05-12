@@ -11,6 +11,7 @@ import AdminProduct from "./admin/AdminProduct.jsx";
 import AdminSetting from "./admin/AdminSetting.jsx";
 import AdminMaterial from "./admin/AdminMaterial.jsx";
 import AdminOrder from "./admin/AdminOrder.jsx";
+import AdminBin from "./admin/AdminBin.jsx";
 
 import BailerHome from "./bailer/BailerHome.jsx";
 import BailerAbout from "./bailer/BailerAbout.jsx";
@@ -44,6 +45,7 @@ function App() {
           <Route path="/admin/setting" element={<AdminSetting />}></Route>
           <Route path="/admin/material" element={<AdminMaterial />}></Route>
           <Route path="/admin/order" element={<AdminOrder />}></Route>
+          <Route path="/admin/bin" element={<AdminBin />}></Route>
 
           <Route path="/bailer/home" element={<BailerHome />}></Route>
           <Route path="/bailer/about" element={<BailerAbout />}></Route>
