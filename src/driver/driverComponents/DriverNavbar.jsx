@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
@@ -17,8 +18,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../../AppStore';
 
-const AppBar = styled(MuiAppBar, {
-})(({ theme }) => ({
+const AppBar = styled(MuiAppBar, {})(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
 }));
 
@@ -89,6 +89,22 @@ export default function DriverNavbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  // Function to handle logout
+  const handleLogout = () => {
+    fetch('http://localhost:3001/api/auth/logout', { method: 'POST' }) // Assuming your logout endpoint is '/logout'
+      .then(response => {
+        if (response.ok) {
+          // If logout successful, redirect to the home page
+          window.location.href = '/'; // Redirect to the home page
+        } else {
+          throw new Error('Logout failed');
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+      });
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -106,7 +122,7 @@ export default function DriverNavbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -165,7 +181,7 @@ export default function DriverNavbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation = {0} sx={{ color: "black", backgroundColor: "white" }}>
+      <AppBar position="fixed" elevation={0} sx={{ color: "black", backgroundColor: "white" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -183,7 +199,7 @@ export default function DriverNavbar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            Eko Plasco
           </Typography>
           <Search>
             <SearchIconWrapper>

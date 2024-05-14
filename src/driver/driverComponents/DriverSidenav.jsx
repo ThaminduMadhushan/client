@@ -87,7 +87,7 @@ export default function DriverSidenav() {
         </DrawerHeader>
         <Divider />
         <List>
-        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/employee/home")}>
+        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/driver/home")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -107,7 +107,7 @@ export default function DriverSidenav() {
                 <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/employee/about")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/driver/bin")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -124,10 +124,10 @@ export default function DriverSidenav() {
                 >
                 <InboxIcon />
                 </ListItemIcon>
-                <ListItemText primary="About" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Bin" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/employee/setting")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/driver/profile")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -144,7 +144,7 @@ export default function DriverSidenav() {
                 >
                 <InboxIcon />
                 </ListItemIcon>
-                <ListItemText primary="Setting" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
         </List>
