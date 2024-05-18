@@ -6,15 +6,21 @@ import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
 import Autocomplete from "@mui/material/Autocomplete";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function EditDriverCollection({ closeEvent, collectionId, collectionDetails, materials, adminId, userId, binId }) {
+function EditDriverCollection({ closeEvent, collectionDetails, materials }) {
   const [collectionName, setCollectionName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [price, setPrice] = useState(0);
   const [driverName, setDriverName] = useState("");
-  const [driverId, setDriverId] = useState("");
+  const [driverId, setDriverId] = useState();
   const [error, setError] = useState("");
+  const [AdminId, setAdminId] = useState();
+  const [userId, setUserId] = useState();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (collectionDetails && materials.length > 0) {
@@ -22,16 +28,45 @@ function EditDriverCollection({ closeEvent, collectionId, collectionDetails, mat
       setQuantity(collectionDetails.quantity);
       setSelectedMaterial(collectionDetails.material_name);
       setDriverName(collectionDetails.driver_name);
-      setDriverId(collectionDetails.driver_id);
+      fetchCollectorId(collectionDetails.driver_id);
       calculatePrice(collectionDetails.quantity, collectionDetails.material_name);
     }
   }, [collectionDetails, materials]);
 
   useEffect(() => {
-    if (driverId) {
-      fetchCollectorId(driverId);
+    axios
+      .get("http://localhost:3001/api/auth/authenticated", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.authenticated) {
+          setAdminId(res.data.user.id);
+        } else {
+          navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const fetchCollectorId = async (driverId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/driver/user/${driverId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch driver ID");
+      }
+      const data = await response.json();
+      if (data && data.user_id) {
+        setDriverId(data.user_id);
+        setUserId(data.user_id);
+      } else {
+        throw new Error("Invalid response data");
+      }
+    } catch (error) {
+      console.error("Error fetching driver ID:", error);
     }
-  }, [driverId]);
+  };
 
   const handleNameChange = (event) => {
     setCollectionName(event.target.value);
@@ -54,25 +89,29 @@ function EditDriverCollection({ closeEvent, collectionId, collectionDetails, mat
 
   const handleSubmit = async () => {
     try {
-      // Fetch material_id using material name
-      const selectedMaterial = selectedMaterial;
+      // Ensure that selectedMaterial is correctly assigned
       const materialId = materials.find(
         (material) => material.name === selectedMaterial
       )?.material_id;
 
-      // Make POST request to backend
-      const response = await fetch("http://localhost:3001/api/collection", {
+      if (!materialId) {
+        throw new Error("Selected material is not valid.");
+      }
+
+      const body = {
+        admin_id: AdminId,
+        collector_id: userId,
+        material_id: materialId,
+        quantity,
+        price,
+      };
+
+      const response = await fetch("http://localhost:3001/api/collection/driver", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          admin_id: adminId,
-          user_id: driverId,
-          material_id: materialId,
-          quantity,
-          price
-        }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) {
@@ -100,23 +139,6 @@ function EditDriverCollection({ closeEvent, collectionId, collectionDetails, mat
         const totalPrice = material.unit_price * parseInt(quantity);
         setPrice(totalPrice);
       }
-    }
-  };
-
-  const fetchCollectorId = async (driverId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/driver/user/${driverId}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch driver ID");
-      }
-      const data = await response.json();
-      if (data.length > 0) {
-        setDriverId(data[0].driver_id);
-      } else {
-        setDriverId(""); // Reset driver ID if no driver found
-      }
-    } catch (error) {
-      console.error("Error fetching driver ID:", error);
     }
   };
 
@@ -159,7 +181,6 @@ function EditDriverCollection({ closeEvent, collectionId, collectionDetails, mat
               endAdornment: "Kg",
             }}
             fullWidth
-            disabled
           />
         </Grid>
         <Grid item xs={12}>
@@ -167,7 +188,6 @@ function EditDriverCollection({ closeEvent, collectionId, collectionDetails, mat
             value={selectedMaterial}
             onChange={handleMaterialChange}
             id="material-name"
-            disabled
             options={materials.map((material) => material.name)}
             renderInput={(params) => (
               <TextField {...params} label="Material Name" />
@@ -218,3 +238,4 @@ function EditDriverCollection({ closeEvent, collectionId, collectionDetails, mat
 }
 
 export default EditDriverCollection;
+
