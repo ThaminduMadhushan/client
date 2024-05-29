@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
@@ -201,15 +200,7 @@ export default function CustomerNavbar() {
           >
             Eko Plasco
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
