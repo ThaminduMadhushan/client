@@ -1,23 +1,29 @@
-import { Grid, IconButton, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import {
+  Box,
+  TextField,
+  Button,
+  Grid,
+  Typography,
+  IconButton,
+  Autocomplete,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Swal from "sweetalert2";
-import Autocomplete from "@mui/material/Autocomplete";
 
-function EditOrder({ closeEvent, orderId }) {
-  const [name, setName] = useState("");
+function EditOrder({ closeEvent, orderDetails }) {
+  const [name, setName] = useState(orderDetails.order_name || "");
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [quantity, setQuantity] = useState("");
-  const [price, setPrice] = useState("");
+  const [quantity, setQuantity] = useState(orderDetails.quantity || "");
+  const [price, setPrice] = useState(orderDetails.price || "");
   const [error, setError] = useState("");
   const [products, setProducts] = useState([]);
+  const [isEditable, setIsEditable] = useState(true);
 
   useEffect(() => {
     fetchProducts();
-  }, [orderId]);
+    checkIfEditable(orderDetails.created_at);
+  }, [orderDetails]);
 
   const fetchProducts = async () => {
     try {
@@ -27,9 +33,22 @@ function EditOrder({ closeEvent, orderId }) {
       }
       const data = await response.json();
       setProducts(data);
+      setInitialSelectedProduct(data, orderDetails.product_id);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
+  };
+
+  const setInitialSelectedProduct = (products, productId) => {
+    const product = products.find(product => product.product_id === productId);
+    setSelectedProduct(product);
+  };
+
+  const checkIfEditable = (createdAt) => {
+    const orderDate = new Date(createdAt);
+    const now = new Date();
+    const timeDiff = now - orderDate;
+    setIsEditable(timeDiff <= 24 * 60 * 60 * 1000); // 24 hours in milliseconds
   };
 
   const handleNameChange = (event) => {
@@ -43,14 +62,18 @@ function EditOrder({ closeEvent, orderId }) {
 
   const calculatePrice = (quantity, selectedProduct) => {
     if (selectedProduct) {
-      const totalPrice = selectedProduct.unit_price * parseInt(quantity);
+      const totalPrice = selectedProduct.unit_price * parseInt(quantity, 10);
       setPrice(totalPrice);
     }
   };
 
   const handleSubmit = () => {
-    // Convert quantity to a number
-    const quantityValue = parseInt(quantity);
+    if (!isEditable) {
+      Swal.fire("Error!", "You can't edit this order after one day.", "error");
+      return;
+    }
+
+    const quantityValue = parseInt(quantity, 10);
 
     if (isNaN(quantityValue)) {
       setError("Quantity must be a number.");
@@ -62,8 +85,7 @@ function EditOrder({ closeEvent, orderId }) {
       return;
     }
 
-    // Make PUT request to backend
-    fetch(`http://localhost:3001/api/orders/${orderId}`, {
+    fetch(`http://localhost:3001/api/orders/${orderDetails.order_id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -77,19 +99,18 @@ function EditOrder({ closeEvent, orderId }) {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to update Order");
+          throw new Error("Failed to update order");
         }
         return response.json();
       })
       .then((data) => {
-        console.log("Order updated:", data);
-        Swal.fire("Updated!", "Your Order has been updated.", "success");
+        Swal.fire("Updated!", "Your order has been updated.", "success");
         closeEvent();
         window.location.reload();
       })
       .catch((error) => {
-        console.error("Error updating Order:", error);
-        Swal.fire("Error!", "Failed to update the Order.", "error");
+        console.error("Error updating order:", error);
+        Swal.fire("Error!", "Failed to update the order.", "error");
         closeEvent();
       });
   };
@@ -107,7 +128,6 @@ function EditOrder({ closeEvent, orderId }) {
         <CloseIcon />
       </IconButton>
       <Box height={20}></Box>
-      <Box height={20}></Box>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
@@ -118,6 +138,7 @@ function EditOrder({ closeEvent, orderId }) {
             value={name}
             onChange={handleNameChange}
             sx={{ width: "100%" }}
+            disabled={!isEditable}
           />
         </Grid>
         <Grid item xs={12}>
@@ -132,6 +153,7 @@ function EditOrder({ closeEvent, orderId }) {
             getOptionLabel={(option) => option.name}
             renderInput={(params) => <TextField {...params} label="Product" />}
             fullWidth
+            disabled={!isEditable}
           />
         </Grid>
         <Grid item xs={6}>
@@ -147,6 +169,7 @@ function EditOrder({ closeEvent, orderId }) {
               endAdornment: "Kg",
             }}
             sx={{ width: "100%" }}
+            disabled={!isEditable}
           />
         </Grid>
         <Grid item xs={6}>
@@ -170,7 +193,7 @@ function EditOrder({ closeEvent, orderId }) {
         )}
         <Grid item xs={12}>
           <Typography variant="h5" align="center">
-            <Button variant="contained" onClick={handleSubmit}>
+            <Button variant="contained" onClick={handleSubmit} disabled={!isEditable}>
               Update
             </Button>
           </Typography>
