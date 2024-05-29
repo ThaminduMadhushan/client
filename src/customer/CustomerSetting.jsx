@@ -2,7 +2,6 @@ import React from "react";
 import Sidenav from "../customer/customerComponents/CustomerSidenav";
 import Navbar from "../customer/customerComponents/CustomerNavbar";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import List from "./customerSetting/List";
 
 function CustomerSetting() {
@@ -13,7 +12,7 @@ function CustomerSetting() {
       <Box sx={{ display: "flex" }}>
         <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <h1>Setting</h1>
+        <Box height={30} />
           <List />
         </Box>
       </Box>
