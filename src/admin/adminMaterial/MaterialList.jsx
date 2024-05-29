@@ -246,7 +246,7 @@ export default function MaterialList() {
                         {row.updated_at}
                       </TableCell>
                       <TableCell align={"left"}>
-                        <Stack spacing={2}>
+                        <Stack spacing={2} direction="row">
                           <EditIcon
                             style={{
                               fontSize: "20px",
