@@ -3,7 +3,7 @@ import Sidenav from "../customer/customerComponents/CustomerSidenav";
 import Navbar from "../customer/customerComponents/CustomerNavbar";
 import Box from "@mui/material/Box";
 import "../styles/Dashboard.css";
-import OrderList from "./customerOrder/OrderList";
+import List from "./customerOrder/List";
 
 function CustomerAbout() {
   return (
@@ -13,7 +13,7 @@ function CustomerAbout() {
       <Box sx={{ display: "flex" }}>
         <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <OrderList />
+          <List />
         </Box>
       </Box>
     </div>
