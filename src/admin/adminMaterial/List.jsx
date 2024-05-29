@@ -9,6 +9,7 @@ import Stack from "@mui/material/Stack";
 import CardContent from "@mui/material/CardContent";
 import MaterialList from "./MaterialList";
 import DriverCollectionList from "./DriverCollectionList";
+import CustomerCollectionList from "./CustomerCollectionList";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,9 +52,9 @@ export default function List() {
   };
 
   return (
-    <Card sx ={{ minHeight: 84 + "vh"  }}>
+    <Card sx={{ minHeight: 84 + "vh" }}>
       <CardContent>
-        <Box sx={{ width: "100%",  height : "100%"}}>
+        <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
@@ -61,8 +62,8 @@ export default function List() {
               aria-label="basic tabs example"
             >
               <Tab label="Material" {...a11yProps(0)} />
-              <Tab label="Collection" {...a11yProps(1)} />    
-              <Tab label="Item Three" {...a11yProps(2)} />
+              <Tab label="Driver Collection" {...a11yProps(1)} />
+              <Tab label="Add Collection" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
@@ -72,7 +73,7 @@ export default function List() {
             <DriverCollectionList />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
-            Item Three
+            <CustomerCollectionList />
           </CustomTabPanel>
         </Box>
       </CardContent>
