@@ -25,3 +25,7 @@
     min-height: 100vh;
 
 }
+.reportClass {
+    height: 100%;
+    width: 100%;
+  }
