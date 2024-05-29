@@ -9,7 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function EditDriverCollection({ closeEvent, collectionDetails, materials }) {
+function EditDriverCollection({ closeEvent,collectionId, collectionDetails, materials }) {
   const [collectionName, setCollectionName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [selectedMaterial, setSelectedMaterial] = useState(null);
@@ -104,6 +104,7 @@ function EditDriverCollection({ closeEvent, collectionDetails, materials }) {
         material_id: materialId,
         quantity,
         price,
+        collectionId,
       };
 
       const response = await fetch("http://localhost:3001/api/collection/driver", {
