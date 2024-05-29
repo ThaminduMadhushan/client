@@ -15,6 +15,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import CountUp from "react-countup";
+import Test from "../Test"
 
 export default function AdminHome() {
 
@@ -22,18 +23,20 @@ export default function AdminHome() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/auth/authenticated', { withCredentials: true })
-      .then(res => {
+    axios.get("http://localhost:3001/api/auth/authenticated", { withCredentials: true })
+      .then((res) => {
         if (res.data.authenticated) {
           setUser(res.data.user);
         } else {
-          navigate('/login');
+          navigate("/login");
         }
       })
       .catch(err => {
         console.log(err);
+        navigate("/login");
       });
   }, [navigate]);
+
 
   return (
     <div className="backgroundColor">
@@ -108,8 +111,8 @@ export default function AdminHome() {
           <Grid container spacing={2}>
             <Grid item xs={8}>
               <Card sx={{ height: 60 + "vh" }}>
-                <CardContent>
-                  
+                <CardContent sx={{ height: '100%' }}>
+                   <Test />
                 </CardContent>
               </Card>
             </Grid>
