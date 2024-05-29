@@ -17,7 +17,7 @@ function EditCollection({ closeEvent, orderId }) {
 
   useEffect(() => {
     fetchProducts();
-  }, [orderId]);
+  }, [products]);
 
   const fetchProducts = async () => {
     try {
