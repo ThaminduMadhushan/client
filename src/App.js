@@ -24,6 +24,7 @@ import DriverBin from "./driver/DriverBin.jsx";
 
 import CustomerHome from "./customer/CustomerHome.jsx";
 import CustomerAbout from "./customer/CustomerAbout.jsx";
+import CustomerProduct from "./customer/CustomerProduct.jsx";
 import CustomerSetting from "./customer/CustomerSetting.jsx";
 
 import SupplierHome from "./supplier/SupplierHome.jsx";
@@ -58,6 +59,7 @@ function App() {
 
           <Route path="/customer/home" element={<CustomerHome />}></Route>
           <Route path="/customer/order" element={<CustomerAbout />}></Route>
+          <Route path="/customer/product" element={<CustomerProduct />}></Route>
           <Route path="/customer/setting" element={<CustomerSetting />}></Route>
 
           <Route path="/supplier/home" element={<SupplierHome />}></Route>
