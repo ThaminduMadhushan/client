@@ -24,6 +24,7 @@ import AddOrders from "./AddOrder";
 import EditOrders from "./EditOrder";
 import DoneIcon from '@mui/icons-material/Done';
 import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const style = {
   position: "absolute",
@@ -112,7 +113,7 @@ export default function AcceptOrder() {
     }
   };
 
-  const deleteUser = async (id) => {
+  const completeOrder = async (id) => {
     try {
       const confirmed = await Swal.fire({
         title: "Are you sure?",
@@ -121,26 +122,33 @@ export default function AcceptOrder() {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
+        confirmButtonText: "Yes, complete it!",
       });
-
+  
       if (confirmed.isConfirmed) {
-        const response = await fetch(`http://localhost:3001/api/orders/${id}`, {
-          method: "DELETE",
+        const response = await fetch(`http://localhost:3001/api/orders/complete/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ adminId: userId }), // Pass the admin ID here
         });
-
+  
+        const responseData = await response.json(); // Parse the response JSON
+  
         if (!response.ok) {
-          throw new Error("Failed to delete order");
+          throw new Error(responseData.error || "Failed to complete order");
         }
-
+  
         const newRows = rows.filter((row) => row.id !== id);
         setRows(newRows);
-
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+  
+        Swal.fire("Completed!", "The order has been completed.", "success");
+        window.location.reload();
       }
     } catch (error) {
-      console.error("Error deleting order:", error);
-      Swal.fire("Error!", "Failed to delete the order.", "error");
+      console.error("Error completing order:", error);
+      Swal.fire("Error!", error.message || "Failed to complete the order.", "error");
     }
   };
 
@@ -270,23 +278,14 @@ export default function AcceptOrder() {
                     </TableCell>
                     <TableCell align={"left"}>
                       <Stack spacing={2}>
-                        <DoneIcon
+                        <CheckCircleIcon
                           style={{
                             fontSize: "20px",
                             color: "#02294F",
                             cursor: "pointer",
                           }}
                           className="cursor-pointer"
-                          onClick={() => handleOpenEditModal(row.order_id)} // Pass the order ID to the edit modal
-                        />
-                        <CancelIcon
-                          style={{
-                            fontSize: "20px",
-                            color: "#02294F",
-                            cursor: "pointer",
-                          }}
-                          className="cursor-pointer"
-                          onClick={() => deleteUser(row.order_id)}
+                          onClick={() => completeOrder(row.order_id)}
                         />
                       </Stack>
                     </TableCell>
