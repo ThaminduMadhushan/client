@@ -61,6 +61,11 @@ function AddOrder({ closeEvent, customerId }) {
       return;
     }
 
+    if (quantityValue > selectedProduct.total_quantity) {
+      setError(`Quantity cannot exceed available quantity of ${selectedProduct.total_quantity}kg.`);
+      return;
+    }
+
     fetch("http://localhost:3001/api/orders", {
       method: "POST",
       headers: {
@@ -125,6 +130,7 @@ function AddOrder({ closeEvent, customerId }) {
             onChange={(event, newValue) => {
               setSelectedProduct(newValue);
               calculatePrice(quantity, newValue);
+              setError(""); // Clear error when product is changed
             }}
             id="product-autocomplete"
             options={products}
