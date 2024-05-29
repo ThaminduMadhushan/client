@@ -9,7 +9,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Divider, Typography } from "@mui/material";
+import { Divider } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -38,21 +38,30 @@ const style = {
 export default function OrderList() {
   const [user, setUser] = useState();
   const [userId, setUserId] = useState();
+  const [orders, setOrders] = useState([]); // Renamed from rows to orders for clarity
 
   const navigate = useNavigate();
-  
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [rows, setRows] = useState([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [editOrderId, setEditOrderId] = useState(null);
+  const [editOrderDetails, setEditOrderDetails] = useState(null); // To store the order details for editing
 
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const handleOpenEditModal = (orderId) => {
-    setEditOrderId(orderId);
+  const handleOpenEditModal = (order) => {
+    const now = new Date();
+    const orderDate = new Date(order.created_at);
+    const timeDiff = now - orderDate;
+
+    if (timeDiff > 24 * 60 * 60 * 1000) { // Check if the order was created more than 24 hours ago
+      Swal.fire("Error!", "You have exceeded the time limit to edit the order.", "error");
+      return;
+    }
+
+    setEditOrderDetails(order);
     setOpenEditModal(true);
   };
 
@@ -67,8 +76,6 @@ export default function OrderList() {
     setPage(0);
   };
 
-  const [orders, setOrders] = useState([]);
-
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/auth/authenticated", {
@@ -78,7 +85,6 @@ export default function OrderList() {
         if (res.data.authenticated) {
           setUser(res.data.user);
           customerId(res.data.user.id);
-
         } else {
           navigate("/login");
         }
@@ -86,7 +92,7 @@ export default function OrderList() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [navigate]);
 
   const customerId = async (userId) => {
     try {
@@ -98,26 +104,37 @@ export default function OrderList() {
       }
       const data = await response.json();
       setUserId(data.customer_id);
-      fetchOrders(data.customer_id); // Assuming data is an array of objects
+      fetchOrders(data.customer_id);
     } catch (error) {
       console.error("Error fetching customer id:", error);
     }
   };
+
   const fetchOrders = async (userId) => {
     try {
       const response = await fetch(
-        `http://localhost:3001/api/orders/${userId}`
+        `http://localhost:3001/api/customer/pending/${userId}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch orders");
       }
       const data = await response.json();
-      setRows(data); // Assuming data is an array of objects
+      setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
   };
-  const deleteUser = async (id) => {
+
+  const deleteUser = async (id, createdAt) => {
+    const now = new Date();
+    const orderDate = new Date(createdAt);
+    const timeDiff = now - orderDate;
+
+    if (timeDiff > 24 * 60 * 60 * 1000) { // Check if the order was created more than 24 hours ago
+      Swal.fire("Error!", "You have exceeded the time limit to delete the order.", "error");
+      return;
+    }
+
     try {
       const confirmed = await Swal.fire({
         title: "Are you sure?",
@@ -138,10 +155,10 @@ export default function OrderList() {
           throw new Error("Failed to delete order");
         }
 
-        const newRows = rows.filter((row) => row.id !== id);
-        setRows(newRows);
+        const newOrders = orders.filter((order) => order.id !== id);
+        setOrders(newOrders);
 
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        Swal.fire("Deleted!", "Your order has been deleted.", "success");
         window.location.reload();
       }
     } catch (error) {
@@ -152,12 +169,17 @@ export default function OrderList() {
 
   const filterData = (v) => {
     if (v) {
-      setRows([v]);
+      setOrders([v]);
     } else {
-      setRows([]);
-      fetchOrders();
-      window.location.reload();
+      fetchOrders(userId);
     }
+  };
+
+  const isEditable = (createdAt) => {
+    const orderDate = new Date(createdAt);
+    const now = new Date();
+    const timeDiff = now - orderDate;
+    return timeDiff <= 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   };
 
   return (
@@ -178,22 +200,16 @@ export default function OrderList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <EditOrders
-              closeEvent={handleCloseEditModal}
-              orderId={editOrderId}
-            />
+            {editOrderDetails && (
+              <EditOrders
+                closeEvent={handleCloseEditModal}
+                orderDetails={editOrderDetails} // Pass the order details to the edit modal
+              />
+            )}
           </Box>
         </Modal>
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ padding: "20px" }}
-        >
-          ORDER
-        </Typography>
         <Divider />
         <Box height={10} />
         <div
@@ -208,12 +224,12 @@ export default function OrderList() {
           <Autocomplete
             disablePortal
             id="combo-box-demo"
-            options={rows}
+            options={orders}
             sx={{ width: 300, paddingLeft: "20px" }}
             onChange={(e, v) => {
               filterData(v);
             }}
-            getOptionLabel={(rows) => rows.order_name || ""}
+            getOptionLabel={(order) => order.order_name || ""}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" />
             )}
@@ -252,63 +268,44 @@ export default function OrderList() {
                   Update Date
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Status
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
                   Action
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {orders
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={row.code}
-                  >
-                    <TableCell key={row.id} align={"left"}>
-                      {row.order_name}
+                .map((order) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={order.id}>
+                    <TableCell align="left">{order.order_name}</TableCell>
+                    <TableCell align="left">{order.product_name}</TableCell>
+                    <TableCell align="left">{order.quantity}</TableCell>
+                    <TableCell align="left">{order.price}</TableCell>
+                    <TableCell align="left">
+                      {new Date(order.created_at).toLocaleDateString("en-GB")}
                     </TableCell>
-                    <TableCell key={row.id} align={"left"}>
-                      {row.product_name}
+                    <TableCell align="left">
+                      {new Date(order.updated_at).toLocaleDateString("en-GB")}
                     </TableCell>
-                    <TableCell key={row.id} align={"left"}>
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell key={row.id} align={"left"}>
-                      {row.price}
-                    </TableCell>
-                    <TableCell key={row.id} align={"left"}>
-                      {row.created_at}
-                    </TableCell>
-                    <TableCell key={row.id} align={"left"}>
-                      {row.updated_at}
-                    </TableCell>
-                    <TableCell key={row.id} align={"left"}>
-                      {row.status}
-                    </TableCell>
-                    <TableCell align={"left"}>
-                      <Stack spacing={2}>
+                    <TableCell align="left">
+                      <Stack spacing={2} direction="row">
                         <EditIcon
                           style={{
                             fontSize: "20px",
-                            color: "#02294F",
-                            cursor: "pointer",
+                            color: isEditable(order.created_at) ? "#02294F" : "#d3d3d3",
+                            cursor: isEditable(order.created_at) ? "pointer" : "not-allowed",
                           }}
                           className="cursor-pointer"
-                          onClick={() => handleOpenEditModal(row.order_id)} // Pass the order ID to the edit modal
+                          onClick={() => handleOpenEditModal(order)} // Pass the order to the edit modal
                         />
                         <DeleteIcon
                           style={{
                             fontSize: "20px",
-                            color: "#02294F",
-                            cursor: "pointer",
+                            color: isEditable(order.created_at) ? "#02294F" : "#d3d3d3",
+                            cursor: isEditable(order.created_at) ? "pointer" : "not-allowed",
                           }}
                           className="cursor-pointer"
-                          onClick={() => deleteUser(row.order_id)}
+                          onClick={() => deleteUser(order.order_id, order.created_at)}
                         />
                       </Stack>
                     </TableCell>
@@ -318,9 +315,9 @@ export default function OrderList() {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={orders.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -330,4 +327,3 @@ export default function OrderList() {
     </>
   );
 }
-
