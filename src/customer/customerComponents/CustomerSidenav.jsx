@@ -107,6 +107,26 @@ export default function CustomerSidenav() {
                 <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customer/product")}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Product" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+          </ListItem>
           <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/customer/order")}>
               <ListItemButton
                 sx={{
@@ -149,30 +169,6 @@ export default function CustomerSidenav() {
           </ListItem>
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </Box>
   );
