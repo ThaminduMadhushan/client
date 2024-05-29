@@ -10,12 +10,17 @@ function EditProduct({ closeEvent, productId }) {
   const [name, setName] = useState("");
   const [unit_price, setPrice] = useState("");
   const [error, setError] = useState("");
+  const [total_quantity, setTotalQuantity] = useState("");
 
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
+  };
+
+  const handleQuantityChange = (event) => {
+    setTotalQuantity(event.target.value);
   };
 
   const handleSubmit = () => {
@@ -28,7 +33,8 @@ function EditProduct({ closeEvent, productId }) {
       },
       body: JSON.stringify({
         name,
-        unit_price // Send the parsed integer value for quantity
+        unit_price ,// Send the parsed integer value for quantity
+        total_quantity
       }),
     })
     .then(response => {
@@ -75,7 +81,7 @@ function EditProduct({ closeEvent, productId }) {
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Name"
+            label="Product Name"
             variant="outlined"
             size="small"
             value={name}
@@ -86,7 +92,7 @@ function EditProduct({ closeEvent, productId }) {
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Price"
+            label="Unit Price"
             variant="outlined"
             size="small"
             type="number"
@@ -95,6 +101,22 @@ function EditProduct({ closeEvent, productId }) {
             }}
             value={unit_price}
             onChange={handlePriceChange}
+            sx={{ width: "100%" }}
+          >
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="outlined-basic"
+            label="Total Quantity"
+            variant="outlined"
+            size="small"
+            type="number"
+            InputProps={{
+              endAdornment: "Kg",
+            }}
+            value={total_quantity}
+            onChange={handleQuantityChange}
             sx={{ width: "100%" }}
           >
           </TextField>
