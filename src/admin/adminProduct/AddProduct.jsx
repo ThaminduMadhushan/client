@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 function AddProducts({ closeEvent }) {
   const [name, setName] = useState("");
   const [unit_price, setPrice] = useState("");
+  const [total_quantity, setTotalQuantity] = useState("");
   const [error, setError] = useState("");
 
   const handleNameChange = (event) => {
@@ -17,6 +18,10 @@ function AddProducts({ closeEvent }) {
   };
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
+  };
+
+  const handleQuantityChange = (event) => {
+    setTotalQuantity(event.target.value);
   };
 
   const handleSubmit = () => {
@@ -31,7 +36,8 @@ function AddProducts({ closeEvent }) {
       },
       body: JSON.stringify({
         name,
-        unit_price
+        unit_price,
+        total_quantity
       }),
     })
     .then(response => {
@@ -81,7 +87,7 @@ function AddProducts({ closeEvent }) {
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Name"
+            label="Product Name"
             variant="outlined"
             size="small"
             value={name}
@@ -92,7 +98,7 @@ function AddProducts({ closeEvent }) {
         <Grid item xs={12}>
           <TextField
             id="outlined-basic"
-            label="Price"
+            label="Unit Price"
             variant="outlined"
             size="small"
             type="number"
@@ -101,6 +107,22 @@ function AddProducts({ closeEvent }) {
             }}
             value={unit_price}
             onChange={handlePriceChange}
+            sx={{ width: "100%" }}
+          >
+          </TextField>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="outlined-basic"
+            label="Total Quantity"
+            variant="outlined"
+            size="small"
+            type="number"
+            InputProps={{
+              endAdornment: "Kg",
+            }}
+            value={total_quantity}
+            onChange={handleQuantityChange}
             sx={{ width: "100%" }}
           >
           </TextField>
