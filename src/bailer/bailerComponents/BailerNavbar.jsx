@@ -17,8 +17,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../../AppStore';
 
-const AppBar = styled(MuiAppBar, {
-})(({ theme }) => ({
+const AppBar = styled(MuiAppBar, {})(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
 }));
 
@@ -89,6 +88,22 @@ export default function BailerNavbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  // Function to handle logout
+  const handleLogout = () => {
+    fetch('http://localhost:3001/api/auth/logout', { method: 'POST' }) // Assuming your logout endpoint is '/logout'
+      .then(response => {
+        if (response.ok) {
+          // If logout successful, redirect to the home page
+          window.location.href = '/'; // Redirect to the home page
+        } else {
+          throw new Error('Logout failed');
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+      });
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -106,7 +121,7 @@ export default function BailerNavbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -165,7 +180,7 @@ export default function BailerNavbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation = {0} sx={{ color: "black", backgroundColor: "white" }}>
+      <AppBar position="fixed" elevation={0} sx={{ color: "black", backgroundColor: "white" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -183,17 +198,9 @@ export default function BailerNavbar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            Eko Plasco
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
+          
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">

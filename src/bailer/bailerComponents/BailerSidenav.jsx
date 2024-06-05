@@ -87,7 +87,7 @@ export default function BailerSidenav() {
         </DrawerHeader>
         <Divider />
         <List>
-        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/employee/home")}>
+        <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/bailer/home")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -107,7 +107,7 @@ export default function BailerSidenav() {
                 <ListItemText primary="Home" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/employee/about")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/bailer/material")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -124,10 +124,10 @@ export default function BailerSidenav() {
                 >
                 <InboxIcon />
                 </ListItemIcon>
-                <ListItemText primary="About" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Material" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
-          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/employee/setting")}>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/bailer/jobs")}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -144,35 +144,31 @@ export default function BailerSidenav() {
                 >
                 <InboxIcon />
                 </ListItemIcon>
-                <ListItemText primary="Setting" sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary="Jobs" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+          </ListItem>
+          <ListItem disablePadding sx={{ display: 'block' }} onClick={() => navigate("/bailer/profile")}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Profile" sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
           </ListItem>
         </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
     </Box>
   );
