@@ -113,44 +113,44 @@ export default function AcceptOrder() {
     }
   };
 
-  const completeOrder = async (id) => {
-    try {
-      const confirmed = await Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, complete it!",
-      });
+  // const completeOrder = async (id) => {
+  //   try {
+  //     const confirmed = await Swal.fire({
+  //       title: "Are you sure?",
+  //       text: "You won't be able to revert this!",
+  //       icon: "warning",
+  //       showCancelButton: true,
+  //       confirmButtonColor: "#3085d6",
+  //       cancelButtonColor: "#d33",
+  //       confirmButtonText: "Yes, complete it!",
+  //     });
   
-      if (confirmed.isConfirmed) {
-        const response = await fetch(`http://localhost:3001/api/orders/complete/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ adminId: userId }), // Pass the admin ID here
-        });
+  //     if (confirmed.isConfirmed) {
+  //       const response = await fetch(`http://localhost:3001/api/orders/complete/${id}`, {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ adminId: userId }), // Pass the admin ID here
+  //       });
   
-        const responseData = await response.json(); // Parse the response JSON
+  //       const responseData = await response.json(); // Parse the response JSON
   
-        if (!response.ok) {
-          throw new Error(responseData.error || "Failed to complete order");
-        }
+  //       if (!response.ok) {
+  //         throw new Error(responseData.error || "Failed to complete order");
+  //       }
   
-        const newRows = rows.filter((row) => row.id !== id);
-        setRows(newRows);
+  //       const newRows = rows.filter((row) => row.id !== id);
+  //       setRows(newRows);
   
-        Swal.fire("Completed!", "The order has been completed.", "success");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error("Error completing order:", error);
-      Swal.fire("Error!", error.message || "Failed to complete the order.", "error");
-    }
-  };
+  //       Swal.fire("Completed!", "The order has been completed.", "success");
+  //       window.location.reload();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error completing order:", error);
+  //     Swal.fire("Error!", error.message || "Failed to complete the order.", "error");
+  //   }
+  // };
 
   const filterData = (v) => {
     if (v) {
@@ -234,9 +234,9 @@ export default function AcceptOrder() {
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   admin
                 </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
+                {/* <TableCell align="left" style={{ minWidth: "100px" }}>
                   Action
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -276,7 +276,7 @@ export default function AcceptOrder() {
                     <TableCell key={row.id} align={"left"}>
                       {row.admin_name}
                     </TableCell>
-                    <TableCell align={"left"}>
+                    {/* <TableCell align={"left"}>
                       <Stack spacing={2}>
                         <CheckCircleIcon
                           style={{
@@ -288,7 +288,7 @@ export default function AcceptOrder() {
                           onClick={() => completeOrder(row.order_id)}
                         />
                       </Stack>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 ))}
             </TableBody>
