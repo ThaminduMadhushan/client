@@ -17,8 +17,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Modal from "@mui/material/Modal";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import AddOrders from "./AddOrder";
 import EditOrders from "./EditOrder";
@@ -215,15 +213,6 @@ export default function OrderList( closeEvent) {
               <TextField {...params} label="Search by name" />
             )}
           />
-          <Button
-            variant="contained"
-            color="success"
-            endIcon={<AddCircleIcon />}
-            onClick={handleOpenAddModal}
-            size="large"
-          >
-            Add Order
-          </Button>
         </div>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
