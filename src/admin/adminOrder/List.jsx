@@ -10,6 +10,8 @@ import CardContent from "@mui/material/CardContent";
 import OrderList from "./OrderList";
 import AcceptOrder from "./AcceptOrder";
 import CancelOrder from "./CancelOrder";
+import CompleteOrder from "./CompleteOrder";
+import FinishedOrder from "./FinishedOrder";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -63,7 +65,9 @@ export default function BasicTabs() {
             >
               <Tab label="New Orders" {...a11yProps(0)} />
               <Tab label="Accept Orders" {...a11yProps(1)} />    
-              <Tab label="Cancel Orders" {...a11yProps(2)} />
+              <Tab label="Complete Orders" {...a11yProps(2)} />
+              <Tab label="Finished Orders" {...a11yProps(3)} />
+              <Tab label="Cancel Orders" {...a11yProps(4)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
@@ -73,6 +77,12 @@ export default function BasicTabs() {
             <AcceptOrder />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
+            <CompleteOrder />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={3}>
+            <FinishedOrder />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={4}>
             <CancelOrder />
           </CustomTabPanel>
         </Box>
