@@ -12,10 +12,13 @@ import AdminSetting from "./admin/AdminSetting.jsx";
 import AdminMaterial from "./admin/AdminMaterial.jsx";
 import AdminOrder from "./admin/AdminOrder.jsx";
 import AdminBin from "./admin/AdminBin.jsx";
+import AdminEmployee from "./admin/AdminEmployee.jsx";
+import AdminBailerJob from "./admin/AdminBailerJob.jsx";
 
 import BailerHome from "./bailer/BailerHome.jsx";
-import BailerAbout from "./bailer/BailerAbout.jsx";
-import BailerSetting from "./bailer/BailerSetting.jsx";
+import BailerJobs from "./bailer/BailerJobs.jsx";
+import BailerProfile from "./bailer/BailerProfile.jsx";
+import BailerMaterial from "./bailer/BailerMaterial.jsx";
 
 import DriverHome from "./driver/DriverHome.jsx";
 import DriverAbout from "./driver/DriverAbout.jsx";
@@ -48,10 +51,13 @@ function App() {
           <Route path="/admin/material" element={<AdminMaterial />}></Route>
           <Route path="/admin/order" element={<AdminOrder />}></Route>
           <Route path="/admin/bin" element={<AdminBin />}></Route>
+          <Route path="/admin/employee" element={<AdminEmployee />}></Route>
+          <Route path="/admin/bailer" element={<AdminBailerJob />}></Route>
 
           <Route path="/bailer/home" element={<BailerHome />}></Route>
-          <Route path="/bailer/about" element={<BailerAbout />}></Route>
-          <Route path="/bailer/setting" element={<BailerSetting />}></Route>
+          <Route path="/bailer/jobs" element={<BailerJobs />}></Route>
+          <Route path="/bailer/profile" element={<BailerProfile />}></Route>
+          <Route path="/bailer/material" element={<BailerMaterial />}></Route>
 
           <Route path="/driver/home" element={<DriverHome />}></Route>
           <Route path="/driver/bin" element={<DriverBin />}></Route>
