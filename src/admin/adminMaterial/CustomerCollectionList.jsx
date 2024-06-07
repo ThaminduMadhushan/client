@@ -165,9 +165,9 @@ export default function CustomerCollectionList() {
           onChange={(e, v) => {
             filterData(v);
           }}
-          getOptionLabel={(rows) => rows.collection_id.toString() || ""}
+          getOptionLabel={(rows) => rows.supplier_name.toString() || ""}
           renderInput={(params) => (
-            <TextField {...params} label="Search by collection ID" />
+            <TextField {...params} label="Search by Supplier Name" />
           )}
         />
         <Button
