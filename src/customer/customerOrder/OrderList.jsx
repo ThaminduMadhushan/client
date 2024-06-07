@@ -56,8 +56,13 @@ export default function OrderList() {
     const orderDate = new Date(order.created_at);
     const timeDiff = now - orderDate;
 
-    if (timeDiff > 24 * 60 * 60 * 1000) { // Check if the order was created more than 24 hours ago
-      Swal.fire("Error!", "You have exceeded the time limit to edit the order.", "error");
+    if (timeDiff > 24 * 60 * 60 * 1000) {
+      // Check if the order was created more than 24 hours ago
+      Swal.fire(
+        "Error!",
+        "You have exceeded the time limit to edit the order.",
+        "error"
+      );
       return;
     }
 
@@ -130,8 +135,13 @@ export default function OrderList() {
     const orderDate = new Date(createdAt);
     const timeDiff = now - orderDate;
 
-    if (timeDiff > 24 * 60 * 60 * 1000) { // Check if the order was created more than 24 hours ago
-      Swal.fire("Error!", "You have exceeded the time limit to delete the order.", "error");
+    if (timeDiff > 24 * 60 * 60 * 1000) {
+      // Check if the order was created more than 24 hours ago
+      Swal.fire(
+        "Error!",
+        "You have exceeded the time limit to delete the order.",
+        "error"
+      );
       return;
     }
 
@@ -149,13 +159,16 @@ export default function OrderList() {
       if (confirmed.isConfirmed) {
         const response = await fetch(`http://localhost:3001/api/orders/${id}`, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
 
         if (!response.ok) {
           throw new Error("Failed to delete order");
         }
 
-        const newOrders = orders.filter((order) => order.id !== id);
+        const newOrders = orders.filter((order) => order.order_id !== id);
         setOrders(newOrders);
 
         Swal.fire("Deleted!", "Your order has been deleted.", "success");
@@ -292,8 +305,12 @@ export default function OrderList() {
                         <EditIcon
                           style={{
                             fontSize: "20px",
-                            color: isEditable(order.created_at) ? "#02294F" : "#d3d3d3",
-                            cursor: isEditable(order.created_at) ? "pointer" : "not-allowed",
+                            color: isEditable(order.created_at)
+                              ? "#02294F"
+                              : "#d3d3d3",
+                            cursor: isEditable(order.created_at)
+                              ? "pointer"
+                              : "not-allowed",
                           }}
                           className="cursor-pointer"
                           onClick={() => handleOpenEditModal(order)} // Pass the order to the edit modal
@@ -301,11 +318,20 @@ export default function OrderList() {
                         <DeleteIcon
                           style={{
                             fontSize: "20px",
-                            color: isEditable(order.created_at) ? "#02294F" : "#d3d3d3",
-                            cursor: isEditable(order.created_at) ? "pointer" : "not-allowed",
+                            color: isEditable(order.created_at)
+                              ? "#02294F"
+                              : "#d3d3d3",
+                            cursor: isEditable(order.created_at)
+                              ? "pointer"
+                              : "not-allowed",
                           }}
                           className="cursor-pointer"
-                          onClick={() => deleteUser(order.order_id, order.created_at)}
+                          onClick={() =>
+                            deleteUser(
+                              order.order_id,
+                              order.created_at,
+                            )
+                          }
                         />
                       </Stack>
                     </TableCell>
