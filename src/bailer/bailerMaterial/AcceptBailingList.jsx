@@ -109,7 +109,7 @@ export default function BailingList() {
               id="free-solo-demo"
               sx={{ width: 300 }}
               freeSolo
-              options={bailingDetails.map((option) => option.bailing_name)}
+              options={bailingDetails.map((option) => option.product_name)}
               renderInput={(params) => (
                 <TextField {...params} label="Search Bailing" />
               )}
@@ -122,7 +122,6 @@ export default function BailingList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell>Bailing Name</TableCell>
                 <TableCell>Material Name</TableCell>
                 <TableCell>Material Quantity</TableCell>
                 <TableCell>Product Name</TableCell>
@@ -135,7 +134,6 @@ export default function BailingList() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((bailing) => (
                   <TableRow key={bailing.bailing_id}>
-                    <TableCell>{bailing.bailing_name}</TableCell>
                     <TableCell>{bailing.material_name}</TableCell>
                     <TableCell>{bailing.material_quantity}</TableCell>
                     <TableCell>{bailing.product_name}</TableCell>
