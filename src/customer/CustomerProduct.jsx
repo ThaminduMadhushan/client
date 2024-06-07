@@ -111,7 +111,7 @@ function CustomerProduct() {
                               component="div"
                               align="center"
                             >
-                              Unit Price: Rs{product.unit_price}
+                              Unit Price: Rs {product.unit_price}
                             </Typography>
                             <Typography
                               gutterBottom
