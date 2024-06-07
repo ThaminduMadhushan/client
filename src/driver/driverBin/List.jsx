@@ -5,14 +5,13 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
 import CardContent from "@mui/material/CardContent";
 import BinList from "./BinList";
 import CollectionList from "../driverCollection/CollectionList";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
-// aa
+  // aa
   return (
     <div
       role="tabpanel"
@@ -51,9 +50,9 @@ export default function List() {
   };
 
   return (
-    <Card sx ={{ minHeight: 84 + "vh"  }}>
+    <Card sx={{ minHeight: 84 + "vh" }}>
       <CardContent>
-        <Box sx={{ width: "100%",  height : "100%"}}>
+        <Box sx={{ width: "100%", height: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
               value={value}
@@ -61,17 +60,13 @@ export default function List() {
               aria-label="basic tabs example"
             >
               <Tab label="All Bins" {...a11yProps(0)} />
-              <Tab label="Collection" {...a11yProps(1)} />    
-              <Tab label="Collections" {...a11yProps(2)} />
+              <Tab label="Collections" {...a11yProps(1)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
             <BinList />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            Item  two
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
             <CollectionList />
           </CustomTabPanel>
         </Box>
