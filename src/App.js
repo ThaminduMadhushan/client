@@ -21,9 +21,9 @@ import BailerProfile from "./bailer/BailerProfile.jsx";
 import BailerMaterial from "./bailer/BailerMaterial.jsx";
 
 import DriverHome from "./driver/DriverHome.jsx";
-import DriverAbout from "./driver/DriverAbout.jsx";
 import DriverSetting from "./driver/DriverSetting.jsx";
 import DriverBin from "./driver/DriverBin.jsx";
+import DriverSalary  from "./driver/DriverSalary.jsx";
 
 import CustomerHome from "./customer/CustomerHome.jsx";
 import CustomerAbout from "./customer/CustomerAbout.jsx";
@@ -31,7 +31,8 @@ import CustomerProduct from "./customer/CustomerProduct.jsx";
 import CustomerSetting from "./customer/CustomerSetting.jsx";
 
 import SupplierHome from "./supplier/SupplierHome.jsx";
-import SupplierAbout from "./supplier/SupplierAbout.jsx";
+import SupplierCollection from "./supplier/SupplierCollection.jsx";
+import SupplierMaterial from "./supplier/SupplierMaterial.jsx";
 import SupplierSetting from "./supplier/SupplierSetting.jsx";
 
 
@@ -62,6 +63,7 @@ function App() {
           <Route path="/driver/home" element={<DriverHome />}></Route>
           <Route path="/driver/bin" element={<DriverBin />}></Route>
           <Route path="/driver/profile" element={<DriverSetting />}></Route>
+          <Route path="/driver/salary" element={<DriverSalary />}></Route>
 
           <Route path="/customer/home" element={<CustomerHome />}></Route>
           <Route path="/customer/order" element={<CustomerAbout />}></Route>
@@ -69,7 +71,8 @@ function App() {
           <Route path="/customer/setting" element={<CustomerSetting />}></Route>
 
           <Route path="/supplier/home" element={<SupplierHome />}></Route>
-          <Route path="/supplier/about" element={<SupplierAbout />}></Route>
+          <Route path="/supplier/collection" element={<SupplierCollection />}></Route>
+          <Route path="/supplier/material" element={<SupplierMaterial />}></Route>
           <Route path="/supplier/setting" element={<SupplierSetting />}></Route>
         </Routes>
       </BrowserRouter>
