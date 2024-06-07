@@ -17,9 +17,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useAppStore } from '../../AppStore';
 
-const AppBar = styled(MuiAppBar, {
-})(({ theme }) => ({
+const AppBar = styled(MuiAppBar)(({ theme }) => ({
   zIndex: theme.zIndex.drawer + 1,
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.text.primary,
 }));
 
 const Search = styled('div')(({ theme }) => ({
@@ -46,13 +47,13 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  color: theme.palette.text.secondary,
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -89,6 +90,20 @@ export default function SupplierNavbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogout = () => {
+    fetch('http://localhost:3001/api/auth/logout', { method: 'POST' })
+      .then(response => {
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          throw new Error('Logout failed');
+        }
+      })
+      .catch(error => {
+        console.error('Logout error:', error);
+      });
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -106,7 +121,7 @@ export default function SupplierNavbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -165,7 +180,7 @@ export default function SupplierNavbar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed" elevation = {0} sx={{ color: "black", backgroundColor: "white" }}>
+      <AppBar position="fixed" elevation={0}>
         <Toolbar>
           <IconButton
             size="large"
@@ -183,7 +198,7 @@ export default function SupplierNavbar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            Eko Plasco
           </Typography>
           <Search>
             <SearchIconWrapper>
