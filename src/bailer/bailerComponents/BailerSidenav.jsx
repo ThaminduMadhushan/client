@@ -253,6 +253,7 @@ export default function BailerSidenav() {
     { text: 'Home', icon: <InboxIcon />, path: '/bailer/home' },
     { text: 'Material', icon: <InboxIcon />, path: '/bailer/material' },
     { text: 'Jobs', icon: <InboxIcon />, path: '/bailer/jobs' },
+    { text: 'Salary', icon: <InboxIcon />, path: '/bailer/salary' },
     { text: 'Profile', icon: <InboxIcon />, path: '/bailer/profile' },
   ];
 
