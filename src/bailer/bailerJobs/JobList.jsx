@@ -12,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import DoneIcon from '@mui/icons-material/Done';
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -155,7 +155,7 @@ export default function JobList() {
 
   return (
     <>
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+      <Paper sx={{ width: "100%", overflow: "hidden",  }}>
         <Typography
           gutterBottom
           variant="h5"
@@ -229,7 +229,7 @@ export default function JobList() {
                         </TableCell>
                         <TableCell align={"left"}>
                           <Stack spacing={2}>
-                            <CheckBoxIcon
+                            <DoneIcon
                               style={{
                                 fontSize: "20px",
                                 color: "#02294F",
