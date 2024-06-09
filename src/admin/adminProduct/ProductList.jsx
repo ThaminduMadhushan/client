@@ -1,20 +1,11 @@
 // import React, { useState, useEffect } from "react";
-// import Paper from "@mui/material/Paper";
-// import Table from "@mui/material/Table";
-// import TableBody from "@mui/material/TableBody";
-// import TableCell from "@mui/material/TableCell";
-// import TableContainer from "@mui/material/TableContainer";
-// import TableHead from "@mui/material/TableHead";
-// import TablePagination from "@mui/material/TablePagination";
-// import TableRow from "@mui/material/TableRow";
-// import { Divider, Typography } from "@mui/material";
-// import Stack from "@mui/material/Stack";
-// import Box from "@mui/material/Box";
-// import Autocomplete from "@mui/material/Autocomplete";
-// import TextField from "@mui/material/TextField";
-// import Button from "@mui/material/Button";
+// import {
+//   Paper, Table, TableBody, TableCell, TableContainer, TableHead,
+//   TablePagination, TableRow, Divider, Typography, Stack, Box,
+//   Autocomplete, TextField, Button, Modal, IconButton
+// } from "@mui/material";
+// import { styled } from '@mui/system';
 // import AddCircleIcon from "@mui/icons-material/AddCircle";
-// import Modal from "@mui/material/Modal";
 // import EditIcon from "@mui/icons-material/Edit";
 // import DeleteIcon from "@mui/icons-material/Delete";
 // import Swal from "sweetalert2";
@@ -28,10 +19,24 @@
 //   transform: "translate(-50%, -50%)",
 //   width: 400,
 //   bgcolor: "background.paper",
-//   border: "2px solid #000",
+//   border: "none",
 //   boxShadow: 24,
 //   p: 4,
+//   borderRadius: '8px',
 // };
+
+// const CustomButton = styled(Button)(({ theme }) => ({
+//   background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.dark} 90%)`,
+//   border: 0,
+//   borderRadius: 3,
+//   boxShadow: '0 3px 5px 2px rgba(105, 135, 255, .3)',
+//   color: 'white',
+//   height: 48,
+//   padding: '0 30px',
+//   '&:hover': {
+//     background: `linear-gradient(45deg, ${theme.palette.primary.dark} 30%, ${theme.palette.primary.main} 90%)`,
+//   },
+// }));
 
 // export default function ProductList() {
 //   const [page, setPage] = useState(0);
@@ -40,13 +45,14 @@
 //   const [openAddModal, setOpenAddModal] = useState(false);
 //   const [openEditModal, setOpenEditModal] = useState(false);
 //   const [editProductId, setEditProductId] = useState(null);
+//   const [selectedProductData, setSelectedProductData] = useState(null);
 
 //   const handleOpenAddModal = () => setOpenAddModal(true);
 //   const handleCloseAddModal = () => setOpenAddModal(false);
 
-//   const handleOpenEditModal = (productId) => {
-//     setEditProductId(productId);
+//   const handleOpenEditModal = (productData) => {
 //     setOpenEditModal(true);
+//     setProductData(productData);
 //   };
 
 //   const handleCloseEditModal = () => setOpenEditModal(false);
@@ -104,7 +110,7 @@
 //         const newRows = rows.filter((row) => row.id !== id);
 //         setRows(newRows);
 
-//         Swal.fire("Deleted!", "Your file has been deleted.", "success").then(
+//         Swal.fire("Deleted!", "Your product has been deleted.", "success").then(
 //           () => {
 //             window.location.reload();
 //           }
@@ -161,7 +167,7 @@
 //         </Typography>
 //         <Divider />
 //         <Box height={10} />
-        
+
 //         <div
 //           style={{
 //             display: "flex",
@@ -184,15 +190,13 @@
 //               <TextField {...params} label="Search by name" />
 //             )}
 //           />
-//           <Button
-//             variant="contained"
-//             color="success"
+//           <CustomButton
 //             endIcon={<AddCircleIcon />}
 //             onClick={handleOpenAddModal}
 //             size="large"
 //           >
 //             Add Product
-//           </Button>
+//           </CustomButton>
 //         </div>
 
 //         <TableContainer sx={{ maxHeight: 440 }}>
@@ -209,10 +213,10 @@
 //                   Quantity
 //                 </TableCell>
 //                 <TableCell align="left" style={{ minWidth: "100px" }}>
-//                   Created Date
+//                   Material Name
 //                 </TableCell>
 //                 <TableCell align="left" style={{ minWidth: "100px" }}>
-//                   Updated Date
+//                   Material Quantity (kg)
 //                 </TableCell>
 //                 <TableCell align="left" style={{ minWidth: "100px" }}>
 //                   Action
@@ -231,7 +235,7 @@
 //                       key={row.code}
 //                     >
 //                       <TableCell key={row.id} align={"left"}>
-//                         {row.name}
+//                         {row.product_name}
 //                       </TableCell>
 //                       <TableCell key={row.id} align={"left"}>
 //                         {row.unit_price}
@@ -240,31 +244,25 @@
 //                         {row.total_quantity}
 //                       </TableCell>
 //                       <TableCell key={row.id} align={"left"}>
-//                         {row.created_at}
+//                         {row.material_name}
 //                       </TableCell>
 //                       <TableCell key={row.id} align={"left"}>
-//                         {row.updated_at}
+//                         {row.material_quantity}
 //                       </TableCell>
 //                       <TableCell align={"left"}>
 //                         <Stack spacing={2} direction="row">
-//                           <EditIcon
-//                             style={{
-//                               fontSize: "20px",
-//                               color: "#02294F",
-//                               cursor: "pointer",
-//                             }}
-//                             className="cursor-pointer"
-//                             onClick={() => handleOpenEditModal(row.product_id)} // Pass the product ID to the edit modal
-//                           />
-//                           <DeleteIcon
-//                             style={{
-//                               fontSize: "20px",
-//                               color: "#02294F",
-//                               cursor: "pointer",
-//                             }}
-//                             className="cursor-pointer"
+//                           <IconButton
+//                             color="primary"
+//                             onClick={() => handleOpenEditModal(row.product_id)}
+//                           >
+//                             <EditIcon />
+//                           </IconButton>
+//                           <IconButton
+//                             color="secondary"
 //                             onClick={() => deleteUser(row.product_id)}
-//                           />
+//                           >
+//                             <DeleteIcon />
+//                           </IconButton>
 //                         </Stack>
 //                       </TableCell>
 //                     </TableRow>
@@ -334,13 +332,13 @@ export default function ProductList() {
   const [rows, setRows] = useState([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [editProductId, setEditProductId] = useState(null);
+  const [selectedProductData, setSelectedProductData] = useState(null);
 
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const handleOpenEditModal = (productId) => {
-    setEditProductId(productId);
+  const handleOpenEditModal = (productData) => {
+    setSelectedProductData(productData);
     setOpenEditModal(true);
   };
 
@@ -440,7 +438,7 @@ export default function ProductList() {
           <Box sx={style}>
             <EditProducts
               closeEvent={handleCloseEditModal}
-              productId={editProductId}
+              productData={selectedProductData}
             />
           </Box>
         </Modal>
@@ -456,7 +454,7 @@ export default function ProductList() {
         </Typography>
         <Divider />
         <Box height={10} />
-        
+
         <div
           style={{
             display: "flex",
@@ -542,13 +540,13 @@ export default function ProductList() {
                         <Stack spacing={2} direction="row">
                           <IconButton
                             color="primary"
-                            onClick={() => handleOpenEditModal(row.product_id)}
+                            onClick={() => handleOpenEditModal(row)}
                           >
                             <EditIcon />
                           </IconButton>
                           <IconButton
                             color="secondary"
-                            onClick={() => deleteUser(row.product_id)}
+                            onClick={() => deleteUser(row.id)}
                           >
                             <DeleteIcon />
                           </IconButton>
