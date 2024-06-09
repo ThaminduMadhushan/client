@@ -5,7 +5,6 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
 import CardContent from "@mui/material/CardContent";
 import PersonDetails from "./PersonDetails";
 import Person from "./Person";
@@ -43,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs() {
+export default function List() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -62,7 +61,6 @@ export default function BasicTabs() {
             >
               <Tab label="User Details" {...a11yProps(0)} />
               <Tab label="Edit Details" {...a11yProps(1)} />    
-              <Tab label="Change Password" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
@@ -70,9 +68,6 @@ export default function BasicTabs() {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <PersonDetails />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            Item Three
           </CustomTabPanel>
         </Box>
       </CardContent>
