@@ -19,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import EditDriverCollection from "./EditDriverCollection";
+import { styled } from '@mui/system';
 
 const style = {
   position: "absolute",
@@ -27,9 +28,10 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "none",
   boxShadow: 24,
   p: 4,
+  borderRadius: '8px',
 };
 
 export default function DriverCollectionList() {
@@ -157,15 +159,6 @@ export default function DriverCollectionList() {
           </Box>
         </Modal>
       </div>
-      
-      <Typography
-        gutterBottom
-        variant="h5"
-        component="div"
-        sx={{ padding: "20px" }}
-      >
-        Accept Driver Collection
-      </Typography>
       <Divider />
       <Box height={10} />
       
@@ -182,7 +175,7 @@ export default function DriverCollectionList() {
           disablePortal
           id="combo-box-demo"
           options={rows}
-          sx={{ width: 300, paddingLeft: "20px" }}
+          sx={{ width: 300 }}
           onChange={(e, v) => {
             filterData(v);
           }}
@@ -256,24 +249,25 @@ export default function DriverCollectionList() {
                   </TableCell>
                   <TableCell align={"center"}>
                     <Stack spacing={2} direction="row">
-                      <DeleteIcon
+                    <EditIcon
+                      color="primary"
                         style={{
                           fontSize: "20px",
-                          color: "#02294F",
-                          cursor: "pointer",
-                        }}
-                        className="cursor-pointer"
-                        onClick={() => deleteUser(row.collection_id)}
-                      />
-                      <EditIcon
-                        style={{
-                          fontSize: "20px",
-                          color: "#02294F",
                           cursor: "pointer",
                         }}
                         className="cursor-pointer"
                         onClick={() => handleOpenEditModal(row.collection_id, row)} // Pass the collection details to the edit modal
                       />
+                      <DeleteIcon
+                      color="secondary"
+                        style={{
+                          fontSize: "20px",
+                          cursor: "pointer",
+                        }}
+                        className="cursor-pointer"
+                        onClick={() => deleteUser(row.collection_id)}
+                      />
+                     
                     </Stack>
                   </TableCell>
                 </TableRow>

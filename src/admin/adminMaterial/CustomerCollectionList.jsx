@@ -18,6 +18,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import AddCustomerCollection from "./AddCustomerCollection";
+import { styled } from '@mui/system';
 
 const style = {
   position: "absolute",
@@ -26,10 +27,24 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "none",
   boxShadow: 24,
   p: 4,
+  borderRadius: '8px',
 };
+
+const CustomButton = styled(Button)(({ theme }) => ({
+  background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.dark} 90%)`,
+  border: 0,
+  borderRadius: 3,
+  boxShadow: '0 3px 5px 2px rgba(105, 135, 255, .3)',
+  color: 'white',
+  height: 48,
+  padding: '0 30px',
+  '&:hover': {
+    background: `linear-gradient(45deg, ${theme.palette.primary.dark} 30%, ${theme.palette.primary.main} 90%)`,
+  },
+}));
 
 export default function CustomerCollectionList() {
   const [page, setPage] = useState(0);
@@ -136,15 +151,6 @@ export default function CustomerCollectionList() {
           </Box>
         </Modal>
       </div>
-      
-      <Typography
-        gutterBottom
-        variant="h5"
-        component="div"
-        sx={{ padding: "20px" }}
-      >
-        Add New Customer Collection
-      </Typography>
       <Divider />
       <Box height={10} />
       
@@ -170,7 +176,7 @@ export default function CustomerCollectionList() {
             <TextField {...params} label="Search by Supplier Name" />
           )}
         />
-        <Button
+        <CustomButton
           variant="contained"
           color="success"
           endIcon={<AddCircleIcon />}
@@ -178,7 +184,7 @@ export default function CustomerCollectionList() {
           size="large"
         >
           Add Collection
-        </Button>
+        </CustomButton>
       </div>
 
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -222,21 +228,21 @@ export default function CustomerCollectionList() {
                   <TableCell align="left">{row.updated_at}</TableCell>
                   <TableCell align="left">
                     <Stack spacing={2} direction="row">
-                      <DeleteIcon
+                    <EditIcon
+                    color="primary"
                         style={{
                           fontSize: "20px",
-                          color: "#02294F",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => deleteUser(row.collection_id)}
-                      />
-                      <EditIcon
-                        style={{
-                          fontSize: "20px",
-                          color: "#02294F",
                           cursor: "pointer",
                         }}
                         onClick={() => handleOpenEditModal(row.collection_id)}
+                      />
+                      <DeleteIcon
+                      color="secondary"
+                        style={{
+                          fontSize: "20px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => deleteUser(row.collection_id)}
                       />
                     </Stack>
                   </TableCell>
