@@ -9,6 +9,8 @@ import CardContent from "@mui/material/CardContent";
 import EmployeeList from "./EmployeeList";
 import AdminSalaryParametersList from "./AdminSalaryParametersList";
 import SalaryList from "./SalaryList";
+import EmployeeInactiveList from "./EmployeeInactiveList";
+import PaidSalary from "./PaidSalary";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,19 +62,27 @@ export default function BasicTabs() {
               onChange={handleChange}
               aria-label="basic tabs example"
             >
-              <Tab label="Employee List" {...a11yProps(0)} />
-              <Tab label="Salary Parameters" {...a11yProps(1)} />
-              <Tab label="Salary Calculate" {...a11yProps(2)} />
+              <Tab label="Active Employee List" {...a11yProps(0)} />
+              <Tab label="Inactive Employee List" {...a11yProps(1)} />
+              <Tab label="Salary Parameters" {...a11yProps(2)} />
+              <Tab label="Salary Calculate" {...a11yProps(3)} />
+              <Tab label="Paid Salary" {...a11yProps(4)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
             <EmployeeList />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <AdminSalaryParametersList />
+            <EmployeeInactiveList />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
+            <AdminSalaryParametersList />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={3}>
             <SalaryList />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={4}>
+            <PaidSalary />
           </CustomTabPanel>
         </Box>
       </CardContent>

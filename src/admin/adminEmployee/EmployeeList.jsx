@@ -63,7 +63,7 @@ export default function EmployeeList() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch("http://localhost:3001/api/employees/all");
+      const response = await fetch("http://localhost:3001/api/employees/active");
       if (!response.ok) {
         throw new Error("Failed to fetch employees");
       }
@@ -146,13 +146,6 @@ export default function EmployeeList() {
         </Box>
       </Modal>
       <Paper sx={{ width: "100%", overflow: "hidden", mt: 2 }}>
-        <Typography
-          variant="h4"
-          component="div"
-          sx={{ padding: "20px", backgroundColor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}
-        >
-          Employees
-        </Typography>
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', margin: '20px' }}>
           <Autocomplete
@@ -177,7 +170,7 @@ export default function EmployeeList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {['Name', 'Role', 'Phone', 'Address', 'Email', 'Status', 'Created Date', 'Action'].map((header) => (
+                {['Name', 'Role', 'Phone', 'Address', 'Email', 'Created Date', 'Action'].map((header) => (
                   <TableCell
                     key={header}
                     align="left"
@@ -211,7 +204,6 @@ export default function EmployeeList() {
                     <TableCell align="left">{row.phone}</TableCell>
                     <TableCell align="left">{row.address}</TableCell>
                     <TableCell align="left">{row.email}</TableCell>
-                    <TableCell align="left">{row.status}</TableCell>
                     <TableCell align="left">{row.created_at}</TableCell>
                     <TableCell align="left">
                       <Stack spacing={2} direction="row">
