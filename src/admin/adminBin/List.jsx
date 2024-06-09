@@ -5,7 +5,6 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
 import CardContent from "@mui/material/CardContent";
 import BinList from "./BinList";
 import BinTypeList from "./BinTypesList";
@@ -72,7 +71,6 @@ export default function List() {
             >
               <Tab label="Bin Details" {...a11yProps(0)} />
               <Tab label="Bin Types" {...a11yProps(1)} />
-              <Tab label="Item Three" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
@@ -80,9 +78,6 @@ export default function List() {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <BinTypeList />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            Item Three
           </CustomTabPanel>
         </Box>
       </CardContent>

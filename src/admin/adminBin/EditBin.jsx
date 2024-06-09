@@ -9,21 +9,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function EditBinType({ closeEvent, binId }) {
-  const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [typeName, setTypeName] = useState("");
+function EditBin({ closeEvent, binId, binDetails }) {
+  const [name, setName] = useState(binDetails ? binDetails.bin_name : "");
+  const [address, setAddress] = useState(binDetails ? binDetails.address : "");
+  const [typeName, setTypeName] = useState(binDetails ? binDetails.type_name : "");
   const [error, setError] = useState("");
   const [binTypes, setBinTypes] = useState([]);
   const [userId, setUserId] = useState(null);
-
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleAddressChange = (event) => {
-    setAddress(event.target.value);
-  };
 
   const navigate = useNavigate();
 
@@ -77,7 +69,6 @@ function EditBinType({ closeEvent, binId }) {
   };
 
   const handleSubmit = () => {
-
     const selectedBinTypeObj = binTypes.find(
       (binType) => binType.type_name === typeName
     );
@@ -87,7 +78,6 @@ function EditBinType({ closeEvent, binId }) {
       return;
     }
 
-    // Make PUT request to backend
     fetch(`http://localhost:3001/api/bin/${binId}`, {
       method: 'PUT',
       headers: {
@@ -102,25 +92,25 @@ function EditBinType({ closeEvent, binId }) {
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Failed to update bin type');
+        throw new Error('Failed to update bin');
       }
       return response.json();
     })
     .then(data => {
-      console.log('BinType updated:', data);
+      console.log('Bin updated:', data);
       Swal.fire(
         'Updated!',
-        'Your bin type has been updated.',
+        'Your bin  has been updated.',
         'success'
       );
       closeEvent();
       window.location.reload();
     })
     .catch((error) => {
-      console.error('Error updating bin type:', error);
+      console.error('Error updating bin:', error);
       Swal.fire(
         'Error!',
-        'Failed to update the bin type.',
+        'Failed to update the bin.',
         'error'
       );
       closeEvent();
@@ -148,7 +138,7 @@ function EditBinType({ closeEvent, binId }) {
             variant="outlined"
             size="small"
             value={name}
-            onChange={handleNameChange}
+            onChange={(event) => setName(event.target.value)}
             sx={{ width: "100%" }}
           />
         </Grid>
@@ -173,7 +163,7 @@ function EditBinType({ closeEvent, binId }) {
             variant="outlined"
             size="small"
             value={address}
-            onChange={handleAddressChange}
+            onChange={(event) => setAddress(event.target.value)}
             sx={{ width: "100%" }}
           />
         </Grid>
@@ -195,4 +185,5 @@ function EditBinType({ closeEvent, binId }) {
     </div>
   );
 }
-export default EditBinType;
+export default EditBin;
+

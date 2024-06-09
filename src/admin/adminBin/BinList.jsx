@@ -175,7 +175,7 @@
 //           aria-describedby="modal-modal-description"
 //         >
 //           <Box sx={style}>
-//             <AddBins closeEvent={handleCloseAddModal} 
+//             <AddBins closeEvent={handleCloseAddModal}
 //             AdminId ={userId} />
 //           </Box>
 //         </Modal>
@@ -193,7 +193,7 @@
 //           </Box>
 //         </Modal>
 //       </div>
-      
+
 //         <Typography
 //           gutterBottom
 //           variant="h5"
@@ -204,7 +204,7 @@
 //         </Typography>
 //         <Divider />
 //         <Box height={10} />
-        
+
 //         <div
 //           style={{
 //             display: "flex",
@@ -342,15 +342,29 @@
 //   );
 // }
 
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {
-  Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
-  Divider, Typography, Stack, Box, Autocomplete, TextField, Button, Modal, IconButton
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Divider,
+  Typography,
+  Stack,
+  Box,
+  Autocomplete,
+  TextField,
+  Button,
+  Modal,
+  IconButton,
 } from "@mui/material";
-import { styled } from '@mui/system';
+import { styled } from "@mui/system";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -368,18 +382,18 @@ const style = {
   border: "none",
   boxShadow: 24,
   p: 4,
-  borderRadius: '8px',
+  borderRadius: "8px",
 };
 
 const CustomButton = styled(Button)(({ theme }) => ({
   background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.dark} 90%)`,
   border: 0,
   borderRadius: 3,
-  boxShadow: '0 3px 5px 2px rgba(105, 135, 255, .3)',
-  color: 'white',
+  boxShadow: "0 3px 5px 2px rgba(105, 135, 255, .3)",
+  color: "white",
   height: 48,
-  padding: '0 30px',
-  '&:hover': {
+  padding: "0 30px",
+  "&:hover": {
     background: `linear-gradient(45deg, ${theme.palette.primary.dark} 30%, ${theme.palette.primary.main} 90%)`,
   },
 }));
@@ -398,8 +412,11 @@ export default function BinList() {
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
-  const handleOpenEditModal = (binId) => {
-    setEditBinId(binId);
+  const [editBinDetails, setEditBinDetails] = useState(null);
+
+  const handleOpenEditModal = (bin) => {
+    setEditBinId(bin.bin_id);
+    setEditBinDetails(bin); // Set the bin details in the state
     setOpenEditModal(true);
   };
 
@@ -431,9 +448,7 @@ export default function BinList() {
 
   const AdminId = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:3001/api/admin/${userId}`
-      );
+      const response = await fetch(`http://localhost:3001/api/admin/${userId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch admin id");
       }
@@ -480,12 +495,9 @@ export default function BinList() {
       });
 
       if (confirmed.isConfirmed) {
-        const response = await fetch(
-          `http://localhost:3001/api/bin/${id}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(`http://localhost:3001/api/bin/${id}`, {
+          method: "DELETE",
+        });
 
         if (!response.ok) {
           throw new Error("Failed to delete bin");
@@ -524,8 +536,7 @@ export default function BinList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <AddBins closeEvent={handleCloseAddModal} 
-            AdminId ={userId} />
+            <AddBins closeEvent={handleCloseAddModal} AdminId={userId} />
           </Box>
         </Modal>
         <Modal
@@ -537,147 +548,131 @@ export default function BinList() {
             <EditBins
               closeEvent={handleCloseEditModal}
               binId={editBinId}
-              AdminId ={userId}
+              binDetails={editBinDetails} // Pass the bin details here
+              AdminId={userId}
             />
           </Box>
         </Modal>
       </div>
-      
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ padding: "20px" }}
-        >
-          Add New Bin
-        </Typography>
-        <Divider />
-        <Box height={10} />
-        
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "20px",
-            marginRight: "20px",
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+          marginRight: "20px",
+        }}
+      >
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={rows}
+          sx={{ width: 300, paddingLeft: "20px" }}
+          onChange={(e, v) => {
+            filterData(v);
           }}
-        >
-          <Autocomplete
-            disablePortal
-            id="combo-box-demo"
-            options={rows}
-            sx={{ width: 300, paddingLeft: "20px" }}
-            onChange={(e, v) => {
-              filterData(v);
-            }}
-            getOptionLabel={(rows) => rows.bin_name || ""}
-            renderInput={(params) => (
-              <TextField {...params} label="Search by name" />
-            )}
-          />
-          <CustomButton
-            endIcon={<AddCircleIcon />}
-            onClick={handleOpenAddModal}
-            size="large"
-          >
-            Add Bin
-          </CustomButton>
-        </div>
-
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Name
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Type
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Address
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Total Quantity
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Admin
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Created Date
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Updated Date
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Action
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      <TableCell key={row.id} align={"left"}>
-                        {row.bin_name}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.type_name}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.address}
-                      </TableCell>
-                      <TableCell key={row.id} align={"center"}>
-                        {row.total_quantity}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.admin_name}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.created_at}
-                      </TableCell>
-                      <TableCell key={row.id} align={"left"}>
-                        {row.updated_at}
-                      </TableCell>
-                      <TableCell align={"left"}>
-                        <Stack spacing={2} direction="row">
-                          <IconButton
-                            color="primary"
-                            onClick={() => handleOpenEditModal(row.bin_id)}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
-                            color="secondary"
-                            onClick={() => deleteUser(row.bin_id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          getOptionLabel={(rows) => rows.bin_name || ""}
+          renderInput={(params) => (
+            <TextField {...params} label="Search by name" />
+          )}
         />
+        <CustomButton
+          endIcon={<AddCircleIcon />}
+          onClick={handleOpenAddModal}
+          size="large"
+        >
+          Add Bin
+        </CustomButton>
+      </div>
+
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Name
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Type
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Address
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Total Quantity
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Admin
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Created Date
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Updated Date
+              </TableCell>
+              <TableCell align="left" style={{ minWidth: "100px" }}>
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.bin_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.type_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.address}
+                    </TableCell>
+                    <TableCell key={row.id} align={"center"}>
+                      {row.total_quantity}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.admin_name}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.created_at}
+                    </TableCell>
+                    <TableCell key={row.id} align={"left"}>
+                      {row.updated_at}
+                    </TableCell>
+                    <TableCell align={"left"}>
+                      <Stack spacing={2} direction="row">
+                        <IconButton
+                          color="primary"
+                          onClick={() => handleOpenEditModal(row.bin_id)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          color="secondary"
+                          onClick={() => deleteUser(row.bin_id)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Stack>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
   );
 }
