@@ -13,10 +13,11 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import Modal from "@mui/material/Modal";
-import Swal from "sweetalert2";
 import AddSalaryParameters from "./AddSalaryParameters";
 import EditIcon from "@mui/icons-material/Edit";
 import EditParameter from "./EditParameters";
+import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const style = {
   position: "absolute",
@@ -28,7 +29,21 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  borderRadius: '8px',
 };
+
+const CustomButton = styled(Button)(({ theme }) => ({
+  background: `linear-gradient(45deg, ${theme.palette.primary.main} 30%, ${theme.palette.primary.dark} 90%)`,
+  border: 0,
+  borderRadius: 3,
+  boxShadow: '0 3px 5px 2px rgba(105, 135, 255, .3)',
+  color: 'white',
+  height: 48,
+  padding: '0 30px',
+  '&:hover': {
+    background: `linear-gradient(45deg, ${theme.palette.primary.dark} 30%, ${theme.palette.primary.main} 90%)`,
+  },
+}));
 
 export default function AdminSalaryParametersList() {
   const [page, setPage] = useState(0);
@@ -114,15 +129,6 @@ export default function AdminSalaryParametersList() {
         </Modal>
       </div>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ padding: "20px" }}
-        >
-          Salary Parameters
-        </Typography>
-        <Divider />
         <Box height={10} />
         <div
           style={{
@@ -133,15 +139,16 @@ export default function AdminSalaryParametersList() {
             marginRight: "20px",
           }}
         >
-          <Button
+          <CustomButton
             variant="contained"
             color="success"
             endIcon={<AddCircleIcon />}
             onClick={handleOpenAddModal}
             size="large"
+            sx={{ marginLeft: "20px" }}
           >
             Add Parameters
-          </Button>
+          </CustomButton>
         </div>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -185,9 +192,9 @@ export default function AdminSalaryParametersList() {
                       <TableCell align="left">
                         <Stack spacing={2} direction="row">
                           <EditIcon
+                          color = "primary"
                             style={{
                               fontSize: "20px",
-                              color: "#02294F",
                               cursor: "pointer",
                             }}
                             className="cursor-pointer"
