@@ -66,7 +66,7 @@ export default function BasicTabs() {
               <Tab label="New Orders" {...a11yProps(0)} />
               <Tab label="Accept Orders" {...a11yProps(1)} />    
               <Tab label="Complete Orders" {...a11yProps(2)} />
-              <Tab label="Finished Orders" {...a11yProps(3)} />
+              <Tab label="Delivered Orders" {...a11yProps(3)} />
               <Tab label="Cancel Orders" {...a11yProps(4)} />
             </Tabs>
           </Box>

@@ -278,18 +278,18 @@ export default function OrderList( closeEvent) {
                     <TableCell align={"left"}>
                       <Stack spacing={2}>
                         <DoneIcon
+                        color = "primary"
                           style={{
                             fontSize: "20px",
-                            color: "#02294F",
                             cursor: "pointer",
                           }}
                           className="cursor-pointer"
                           onClick={() => handleOpenEditModal(row.order_id)} // Pass the order ID to the edit modal
                         />
                         <CancelIcon
+                        color="secondary"
                           style={{
-                            fontSize: "20px",
-                            color: "#02294F",
+                            fontSize: "20px",        
                             cursor: "pointer",
                           }}
                           className="cursor-pointer"

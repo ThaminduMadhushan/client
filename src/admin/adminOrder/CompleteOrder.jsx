@@ -279,9 +279,9 @@ export default function AcceptOrder() {
                     <TableCell align={"left"}>
                       <Stack spacing={2}>
                         <CheckCircleIcon
+                        color="primary"
                           style={{
                             fontSize: "20px",
-                            color: "#02294F",
                             cursor: "pointer",
                           }}
                           className="cursor-pointer"

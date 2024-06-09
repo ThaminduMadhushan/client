@@ -263,19 +263,10 @@ export default function CancelOrder() {
                     </TableCell>
                     <TableCell align={"left"}>
                       <Stack spacing={2}>
-                        {/* <DoneIcon
-                          style={{
-                            fontSize: "20px",
-                            color: "#02294F",
-                            cursor: "pointer",
-                          }}
-                          className="cursor-pointer"
-                          onClick={() => handleOpenEditModal(row.order_id)} // Pass the order ID to the edit modal
-                        /> */}
                         <DeleteIcon
+                        color="secondary"
                           style={{
                             fontSize: "20px",
-                            color: "#02294F",
                             cursor: "pointer",
                           }}
                           className="cursor-pointer"
