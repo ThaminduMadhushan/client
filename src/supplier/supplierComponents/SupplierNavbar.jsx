@@ -91,7 +91,7 @@ export default function SupplierNavbar() {
   };
 
   const handleLogout = () => {
-    fetch('http://localhost:3001/api/auth/logout', { method: 'POST' })
+    fetch('http://localhost:3001/api/auth/logout', { method: 'POST', credentials: 'include' }, { withCredentials: true })
       .then(response => {
         if (response.ok) {
           window.location.href = '/';
@@ -103,7 +103,7 @@ export default function SupplierNavbar() {
         console.error('Logout error:', error);
       });
   };
-
+  
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
