@@ -7,9 +7,9 @@ import SaveIcon from '@mui/icons-material/Save';
 
 export default function Person() {
   const [user, setUser] = useState({ firstname: '', lastname: '', email: '', id: '' });
-  const [customerId, setCustomerId] = useState('');
-  const [customerFirstname, setCustomerFirstname] = useState('');
-  const [customerLastname, setCustomerLastname] = useState('');
+  const [driverId, setDriverId] = useState('');
+  const [driverFirstname, setDriverFirstname] = useState('');
+  const [driverLastname, setDriverLastname] = useState('');
   const [aboutText, setAboutText] = useState('');
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -38,15 +38,15 @@ export default function Person() {
     try {
       const response = await fetch(`http://localhost:3001/api/driver/${userId}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch customer details');
+        throw new Error('Failed to fetch driver details');
       }
       const data = await response.json();
-      setCustomerId(data.customer_id);
-      setCustomerFirstname(data.firstname);
-      setCustomerLastname(data.lastname);
+      setDriverId(data.driver_id);
+      setDriverFirstname(data.firstname);
+      setDriverLastname(data.lastname);
       setAboutText(data.about);
     } catch (error) {
-      setError('Failed to fetch customer details');
+      setError('Failed to fetch driver details');
     }
   };
 
@@ -78,7 +78,7 @@ export default function Person() {
                 <Typography variant="subtitle1" color="textSecondary">
                   First Name:
                 </Typography>
-                <Typography variant="body1">{customerFirstname}</Typography>
+                <Typography variant="body1">{driverFirstname}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={6}>
@@ -86,7 +86,7 @@ export default function Person() {
                 <Typography variant="subtitle1" color="textSecondary">
                   Last Name:
                 </Typography>
-                <Typography variant="body1">{customerLastname}</Typography>
+                <Typography variant="body1">{driverLastname}</Typography>
               </Stack>
             </Grid>
             <Grid item xs={12}>
