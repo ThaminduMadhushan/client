@@ -19,6 +19,7 @@ import BailerHome from "./bailer/BailerHome.jsx";
 import BailerJobs from "./bailer/BailerJobs.jsx";
 import BailerProfile from "./bailer/BailerProfile.jsx";
 import BailerMaterial from "./bailer/BailerMaterial.jsx";
+import BailerSalary from "./bailer/BailerSalaryDetails.jsx";
 
 import DriverHome from "./driver/DriverHome.jsx";
 import DriverSetting from "./driver/DriverSetting.jsx";
@@ -59,6 +60,7 @@ function App() {
           <Route path="/bailer/jobs" element={<BailerJobs />}></Route>
           <Route path="/bailer/profile" element={<BailerProfile />}></Route>
           <Route path="/bailer/material" element={<BailerMaterial />}></Route>
+          <Route path="/bailer/salary" element={<BailerSalary />}></Route>
 
           <Route path="/driver/home" element={<DriverHome />}></Route>
           <Route path="/driver/bin" element={<DriverBin />}></Route>
