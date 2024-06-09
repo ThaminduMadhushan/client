@@ -6,7 +6,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
-  const [bailingName, setBailingName] = useState("");
   const [productId, setProductId] = useState(null);
   const [productQuantity, setProductQuantity] = useState("");
   const [materialId, setMaterialId] = useState(null);
@@ -16,7 +15,6 @@ function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
 
   useEffect(() => {
     if (bailingDetails) {
-      setBailingName(bailingDetails.bailing_name);
       setProductId(bailingDetails.product_id);
       setProductQuantity(bailingDetails.product_quantity);
       setMaterialId(bailingDetails.material_id);
@@ -64,7 +62,6 @@ function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
         },
         body: JSON.stringify({
           bailing_id: bailingDetails.bailing_id,
-          bailing_name: bailingName,
           product_id: productId,
           product_quantity: productQuantity,
           material_id: materialId,
@@ -102,16 +99,6 @@ function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
       >
         <CloseIcon />
       </IconButton>
-
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        label="Bailing Name"
-        autoFocus
-        value={bailingName}
-        onChange={(e) => setBailingName(e.target.value)}
-      />
 
       <Autocomplete
         options={products}

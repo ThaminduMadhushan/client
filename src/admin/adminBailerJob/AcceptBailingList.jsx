@@ -223,18 +223,7 @@ export default function AcceptBailingList() {
 
   return (
     <Box sx={{ padding: "20px" }}>
-      <Paper sx={{ width: "100%", overflow: "hidden", p: 2, borderRadius: 2 }}>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ paddingBottom: "20px" }}
-        >
-          Convert List
-        </Typography>
-        <Divider />
-        <Box height={20} />
-        
+      <Paper sx={{ width: "100%", overflow: "hidden", p: 2, borderRadius: 2 }}>  
         <Stack
           direction="row"
           spacing={2}
@@ -248,7 +237,7 @@ export default function AcceptBailingList() {
             onChange={(e, v) => {
               filterData(v);
             }}
-            getOptionLabel={(rows) => rows.bailing_name || ""}
+            getOptionLabel={(rows) => rows.bailer_firstname || ""}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" variant="outlined" />
             )}
@@ -261,9 +250,6 @@ export default function AcceptBailingList() {
               <TableRow>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Bailing Name
-                </TableCell>
-                <TableCell align="left" style={{ minWidth: "100px" }}>
-                  Bailer Name
                 </TableCell>
                 <TableCell align="left" style={{ minWidth: "100px" }}>
                   Material Name
@@ -287,7 +273,6 @@ export default function AcceptBailingList() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.bailing_id}>
-                    <TableCell align="left">{row.bailing_name}</TableCell>
                     <TableCell align="left">{`${row.bailer_firstname} ${row.bailer_lastname}`}</TableCell>
                     <TableCell align="left">{row.material_name}</TableCell>
                     <TableCell align="left">{row.material_quantity}</TableCell>

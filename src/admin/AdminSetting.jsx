@@ -34,7 +34,7 @@ function AdminSetting() {
       <Box sx={{ display: "flex" }}>
         <Sidenav />
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <h1>Setting</h1>
+        <Box height={30} />
           <List />
         </Box>
       </Box>

@@ -370,17 +370,6 @@ export default function PendingBailingList() {
       </Modal>
 
       <Paper sx={{ width: "100%", overflow: "hidden", p: 2, borderRadius: 2 }}>
-        <Typography
-          gutterBottom
-          variant="h5"
-          component="div"
-          sx={{ paddingBottom: "20px", color: "primary.main" }}
-        >
-          Convert List
-        </Typography>
-        <Divider />
-        <Box height={20} />
-
         <Stack
           direction="row"
           spacing={2}
@@ -392,7 +381,7 @@ export default function PendingBailingList() {
             options={rows}
             sx={{ width: 300 }}
             onChange={(e, v) => filterData(v)}
-            getOptionLabel={(rows) => rows.bailing_name || ""}
+            getOptionLabel={(rows) => rows.bailer_firstname || ""}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" variant="outlined" />
             )}
@@ -403,7 +392,7 @@ export default function PendingBailingList() {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                {["Bailing Name", "Bailer Name", "Material Name", "Material Quantity", "Product Name", "Product Quantity", "Updated Date", "Action"].map((header) => (
+                {[ "Bailer Name", "Material Name", "Material Quantity", "Product Name", "Product Quantity", "Updated Date", "Action"].map((header) => (
                   <TableCell key={header} align="left" style={{ minWidth: "100px", fontWeight: 'bold' }}>
                     {header}
                   </TableCell>
@@ -415,7 +404,6 @@ export default function PendingBailingList() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.bailing_id}>
-                    <TableCell align="left">{row.bailing_name}</TableCell>
                     <TableCell align="left">{`${row.bailer_firstname} ${row.bailer_lastname}`}</TableCell>
                     <TableCell align="left">{row.material_name}</TableCell>
                     <TableCell align="left">{row.material_quantity}</TableCell>
@@ -424,7 +412,8 @@ export default function PendingBailingList() {
                     <TableCell align="left">{row.date}</TableCell>
                     <TableCell align="left">
                       <EditIcon
-                        style={{ fontSize: "20px", color: "#02294F", cursor: "pointer" }}
+                       color= "primary"
+                        style={{ fontSize: "20px", cursor: "pointer" }}
                         onClick={() => handleOpenEditModal(row)}
                       />
                     </TableCell>
