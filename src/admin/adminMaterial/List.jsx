@@ -63,7 +63,7 @@ export default function List() {
             >
               <Tab label="Material" {...a11yProps(0)} />
               <Tab label="Driver Collection" {...a11yProps(1)} />
-              <Tab label="Add Supplier Collection" {...a11yProps(2)} />
+              <Tab label="Supplier Collection" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
