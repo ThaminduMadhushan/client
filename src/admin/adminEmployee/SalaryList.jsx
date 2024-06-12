@@ -59,6 +59,10 @@ export default function SalaryList() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [editOrderId, setEditOrderId] = useState(null);
 
+  const [openAddOneModal, setOpenAddOneModal] = useState(false);
+  const handleOpenOneAddModal = () => setOpenAddOneModal(true);
+  const handleCloseOneAddModal = () => setOpenAddOneModal(false);
+
   const handleOpenAddModal = () => setOpenAddModal(true);
   const handleCloseAddModal = () => setOpenAddModal(false);
 
@@ -196,12 +200,12 @@ export default function SalaryList() {
           </Box>
         </Modal>
         <Modal
-          open={openAddModal}
+          open={openAddOneModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <SalaryForOneEmployee closeEvent={handleCloseAddModal} fetchSalaries={fetchSalaries} />
+            <SalaryForOneEmployee closeEvent={handleCloseOneAddModal} fetchSalaries={fetchSalaries} />
           </Box>
         </Modal>
         <Modal
@@ -246,7 +250,7 @@ export default function SalaryList() {
             variant="contained"
             color="success"
             endIcon={<AddCircleIcon />}
-            onClick={handleOpenAddModal}
+            onClick={handleOpenOneAddModal}
             size="large"
           >
             Generate Salary
