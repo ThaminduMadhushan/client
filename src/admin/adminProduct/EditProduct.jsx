@@ -50,11 +50,17 @@ function EditProduct({ closeEvent, productData }) {
   };
 
   const handleSubmit = () => {
+
+    if (unit_price <= 0 || total_quantity <= 0 || material_quantity <= 0) {
+      setError("Price and quantities must be greater than zero.");
+      return;
+    }
     // Make PUT request to backend
     fetch(`http://localhost:3001/api/products/${productData.product_id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+
       },
       body: JSON.stringify({
         product_name: name,

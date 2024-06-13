@@ -561,7 +561,7 @@ export default function MaterialList() {
                             className="cursor-pointer"
                             onClick={() => handleOpenEditModal(row)} // Pass the entire material object to the edit modal
                           />
-                          <DeleteIcon
+                          {/* <DeleteIcon
                             color="secondary"
                             style={{
                               fontSize: "20px",
@@ -569,7 +569,7 @@ export default function MaterialList() {
                             }}
                             className="cursor-pointer"
                             onClick={() => deleteUser(row.id)}
-                          />
+                          /> */}
                         </Stack>
                       </TableCell>
                     </TableRow>

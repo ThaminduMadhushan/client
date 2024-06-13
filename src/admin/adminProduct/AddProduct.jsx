@@ -55,6 +55,11 @@ function AddProducts({ closeEvent }) {
       return;
     }
 
+    if (unit_price < 0 || total_quantity <= 0 || material_quantity < 0) {
+      setError("Price and quantities must be greater than zero.");
+      return;
+    }
+
     // Make POST request to backend
     fetch('http://localhost:3001/api/products', {
       method: 'POST',

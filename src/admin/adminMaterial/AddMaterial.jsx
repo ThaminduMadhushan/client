@@ -21,7 +21,10 @@ function AddMaterials({ closeEvent }) {
 
   const handleSubmit = () => {
     // Convert quantity to a number
-    
+    if (unit_price <= 0 ) {
+      setError("Price must be greater than zero.");
+      return;
+    }
 
     // Make POST request to backend
     fetch('http://localhost:3001/api/materials', {

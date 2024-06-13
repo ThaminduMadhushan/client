@@ -146,6 +146,11 @@ function EditMaterial({ closeEvent, material }) {
   };
 
   const handleSubmit = () => {
+
+    if (unit_price <= 0 ) {
+      setError("Price must be greater than zero.");
+      return;
+    }
     // Make PUT request to backend
     fetch(`http://localhost:3001/api/materials/${material.id}`, {
       method: 'PUT',
