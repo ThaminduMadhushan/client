@@ -5,7 +5,7 @@ import Sidenav from "../admin/adminComponents/AdminSidenav";
 import Navbar from "../admin/adminComponents/AdminNavbar";
 import Box from "@mui/material/Box";
 import "../styles/Dashboard.css";
-import ProductList from "./adminProduct/ProductList";
+import List from "./adminProduct/List";
 
 function AdminProduct() {
 
@@ -35,7 +35,7 @@ function AdminProduct() {
         <Sidenav />
 
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <ProductList />
+          <List />
         </Box>
       </Box>
     </div>
