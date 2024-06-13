@@ -450,6 +450,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Tooltip from "@mui/material/Tooltip";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppStore } from "../../AppStore";
+import SummarizeIcon from '@mui/icons-material/Summarize';
 
 const drawerWidth = 240;
 
@@ -515,6 +516,7 @@ export default function AdminSidenav() {
     { text: "Bailing", icon: <WorkIcon />, path: "/admin/bailer" },
     { text: "Bin", icon: <InventoryIcon />, path: "/admin/bin" },
     { text: "Employee", icon: <WorkIcon />, path: "/admin/employee" },
+    { text: "Report", icon: <SummarizeIcon />, path: "/admin/report" },
     { text: "Profile", icon: <SettingsIcon />, path: "/admin/setting" },
   ];
 
