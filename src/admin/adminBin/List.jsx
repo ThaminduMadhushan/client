@@ -8,6 +8,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import BinList from "./BinList";
 import BinTypeList from "./BinTypesList";
+import DisableBins from "./DisableBins";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -70,13 +71,17 @@ export default function List() {
               aria-label="basic tabs example"
             >
               <Tab label="Bin Details" {...a11yProps(0)} />
-              <Tab label="Bin Types" {...a11yProps(1)} />
+              <Tab label="Disable Bins" {...a11yProps(1)} />
+              <Tab label="Bin Types" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
             <BinList />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
+            <DisableBins />
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
             <BinTypeList />
           </CustomTabPanel>
         </Box>
