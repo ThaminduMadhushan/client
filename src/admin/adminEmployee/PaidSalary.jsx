@@ -132,7 +132,7 @@ export default function PaidSalary() {
             onChange={(e, v) => {
               filterData(v);
             }}
-            getOptionLabel={(rows) => rows.employee_id || ""}
+            getOptionLabel={(rows) => rows.bailer_name || rows.driver_name || ""}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" />
             )}

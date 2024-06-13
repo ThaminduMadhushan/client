@@ -241,7 +241,7 @@ export default function SalaryList() {
             onChange={(e, v) => {
               filterData(v);
             }}
-            getOptionLabel={(rows) => rows.employee_id || ""}
+            getOptionLabel={(rows) => rows.driver_name || rows.bailer_name}
             renderInput={(params) => (
               <TextField {...params} label="Search by name" />
             )}
