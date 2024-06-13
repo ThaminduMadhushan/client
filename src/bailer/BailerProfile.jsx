@@ -6,7 +6,7 @@ import List from "./bailerSetting/List";
 
 function BailerSetting() {
   return (
-    <div className="backgroundColor">
+    <div color="primary">
       <Navbar />
       <Box height={30} />
       <Box sx={{ display: "flex" }}>

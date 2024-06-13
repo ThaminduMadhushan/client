@@ -6,7 +6,7 @@ import List from "./customerSetting/List";
 
 function CustomerSetting() {
   return (
-    <div className="backgroundColor">
+    <div color="primary">
       <Navbar />
       <Box height={30} />
       <Box sx={{ display: "flex" }}>

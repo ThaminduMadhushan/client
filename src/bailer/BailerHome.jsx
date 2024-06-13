@@ -16,7 +16,7 @@ import CountUp from "react-countup";
 
 export default function BailerHome() {
   return (
-    <div className="backgroundColor">
+    <div color="primary">
       <Navbar />
       <Box height={70} />
       <Box sx={{ display: "flex" }}>

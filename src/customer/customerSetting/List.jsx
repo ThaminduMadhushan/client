@@ -62,7 +62,6 @@ export default function BasicTabs() {
             >
               <Tab label="Profile" {...a11yProps(0)} />
               <Tab label="Edit Profile" {...a11yProps(1)} />    
-              <Tab label="Forgot Password" {...a11yProps(2)} />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
@@ -70,9 +69,6 @@ export default function BasicTabs() {
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <PersonDetails />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={2}>
-            Item Three
           </CustomTabPanel>
         </Box>
       </CardContent>

@@ -29,7 +29,7 @@ function AdminBin() {
   }, [navigate]);
 
   return (
-    <div className="backgroundColor">
+    <div color="primary">
       <Navbar />
       <Box height={70} />
       <Box sx={{ display: "flex" }}>

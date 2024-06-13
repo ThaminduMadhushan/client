@@ -6,7 +6,7 @@ import SalaryList from "./bailerSalary/SalaryList";
 
 function BailerSalaryDetails() {
   return (
-    <div className="backgroundColor">
+    <div color="primary">
       <Navbar />
       <Box height={30} />
       <Box sx={{ display: "flex" }}>

@@ -7,7 +7,7 @@ import List from "../driver/driverSetting/List";
 
 function DriverSetting() {
   return (
-    <div className="backgroundColor">
+    <div color="primary">
       <Navbar />
       <Box height={30} />
       <Box sx={{ display: "flex" }}>
