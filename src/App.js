@@ -14,6 +14,8 @@ import AdminOrder from "./admin/AdminOrder.jsx";
 import AdminBin from "./admin/AdminBin.jsx";
 import AdminEmployee from "./admin/AdminEmployee.jsx";
 import AdminBailerJob from "./admin/AdminBailerJob.jsx";
+import AdminReport from "./admin/AdminReport.jsx";
+import MonthlyReport from "./admin/adminReport/MonthlyReport.jsx";
 
 import BailerHome from "./bailer/BailerHome.jsx";
 import BailerJobs from "./bailer/BailerJobs.jsx";
@@ -55,6 +57,9 @@ function App() {
           <Route path="/admin/bin" element={<AdminBin />}></Route>
           <Route path="/admin/employee" element={<AdminEmployee />}></Route>
           <Route path="/admin/bailer" element={<AdminBailerJob />}></Route>
+          <Route path="/admin/report" element={<AdminReport />}></Route>
+
+          <Route path="/admin/report/monthly" element={<MonthlyReport />}></Route>
 
           <Route path="/bailer/home" element={<BailerHome />}></Route>
           <Route path="/bailer/jobs" element={<BailerJobs />}></Route>
