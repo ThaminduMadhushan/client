@@ -12,6 +12,7 @@ function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
   const [materialQuantity, setMaterialQuantity] = useState("");
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (bailingDetails) {
@@ -53,6 +54,13 @@ function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
   };
 
   const handleSubmit = async (e) => {
+
+    if (productQuantity < 0 || materialQuantity < 0) {
+
+      setError("Price and quantities must be greater than zero.");
+      return;
+    }
+
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3001/api/admin/bailing/details/accept`, {
@@ -102,7 +110,7 @@ function AcceptBailing({ closeEvent, bailingDetails, materials, products }) {
 
       <Autocomplete
         options={products}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => option.product_name}
         onChange={(event, newValue) => setProductId(newValue?.product_id || null)}
         value={getDefaultProduct()}
         renderInput={(params) => <TextField {...params} label="Product Name" />}
